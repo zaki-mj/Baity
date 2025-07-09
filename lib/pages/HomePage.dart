@@ -12,25 +12,20 @@ class HomePage extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Baity"),
-        actions: [
-          Switch(
-            value: themeProvider.isDarkMode,
-            onChanged: (_) => themeProvider.toggleTheme(),
-            activeColor: Theme.of(context).focusColor,
-            inactiveThumbColor: Colors.brown,
-            trackOutlineColor:
-                MaterialStateProperty.all(const Color.fromARGB(0, 165, 64, 64)),
-          ),
-        ],
-      ),
-      body: Center(
+      drawer: Drawer(
         child: Column(
           children: [
-            Text(
-              AppLocalizations.of(context)!.welcomeText,
-              style: Theme.of(context).textTheme.headlineSmall,
+            SizedBox(
+              height: 100,
+            ),
+            Text("Settings"),
+            Switch(
+              value: themeProvider.isDarkMode,
+              onChanged: (_) => themeProvider.toggleTheme(),
+              activeColor: Theme.of(context).focusColor,
+              inactiveThumbColor: Colors.brown,
+              trackOutlineColor: MaterialStateProperty.all(
+                  const Color.fromARGB(0, 165, 64, 64)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -41,6 +36,19 @@ class HomePage extends StatelessWidget {
               },
               child: Text('Switch Language'),
             )
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: Text("Baity"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text(
+              AppLocalizations.of(context)!.welcomeText,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ],
         ),
       ),
