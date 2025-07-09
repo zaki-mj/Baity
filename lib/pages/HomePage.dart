@@ -1,6 +1,8 @@
+import 'package:baity/local_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:baity/themes/theme_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,9 +26,22 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text(
-          'Welcome to Baity!',
-          style: Theme.of(context).textTheme.headlineSmall,
+        child: Column(
+          children: [
+            Text(
+              AppLocalizations.of(context)!.welcomeText,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final provider =
+                    Provider.of<LocaleProvider>(context, listen: false);
+                final isArabic = provider.locale.languageCode == 'ar';
+                provider.setLocale(isArabic ? Locale('en') : Locale('ar'));
+              },
+              child: Text('Switch Language'),
+            )
+          ],
         ),
       ),
     );

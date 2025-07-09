@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:baity/themes/theme_provider.dart';
+import 'package:baity/local_provider.dart';
 import 'pages/HomePage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // 👈 auto-generated after flutter gen-l10n
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+      ],
       child: const BaityApp(),
     ),
   );
@@ -17,13 +24,24 @@ class BaityApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 👇 This context is safe because it's below the Provider
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
 
     return MaterialApp(
       title: 'Baity',
       theme: themeProvider.theme,
-      home: const HomePage(),
+      locale: localeProvider.locale,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: const HomePage(), // 👈 Make sure this exists
     );
   }
 }
