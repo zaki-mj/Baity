@@ -32,10 +32,10 @@ class HouseDetailsPage extends StatelessWidget {
     required this.longitude,
   }) : super(key: key);
 
-  void _openUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception("Could not launch $url");
     }
   }
 
@@ -129,7 +129,7 @@ class HouseDetailsPage extends StatelessWidget {
                     Icon(Icons.phone, color: theme.colorScheme.primary),
                     const SizedBox(width: 6),
                     GestureDetector(
-                      onTap: () => _openUrl('tel:$phone'),
+                      onTap: () => _launchURL('tel:$phone'),
                       child: Text(phone,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(color: theme.colorScheme.primary)),
@@ -142,7 +142,7 @@ class HouseDetailsPage extends StatelessWidget {
                     Icon(Icons.email, color: theme.colorScheme.primary),
                     const SizedBox(width: 6),
                     GestureDetector(
-                      onTap: () => _openUrl('mailto:$email'),
+                      onTap: () => _launchURL('mailto:$email'),
                       child: Text(email,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(color: theme.colorScheme.primary)),
@@ -161,19 +161,19 @@ class HouseDetailsPage extends StatelessWidget {
                     IconButton(
                       icon:
                           const Icon(Icons.facebook, color: Color(0xFF4267B2)),
-                      onPressed: () => _openUrl(facebookUrl),
+                      onPressed: () => _launchURL(facebookUrl),
                       tooltip: loc.detailsFacebook,
                     ),
                     IconButton(
                       icon: const Icon(Icons.camera_alt,
                           color: Color(0xFFC13584)),
-                      onPressed: () => _openUrl(instagramUrl),
+                      onPressed: () => _launchURL(instagramUrl),
                       tooltip: loc.detailsInstagram,
                     ),
                     IconButton(
                       icon: const Icon(Icons.alternate_email,
                           color: Color(0xFF1DA1F2)),
-                      onPressed: () => _openUrl(twitterUrl),
+                      onPressed: () => _launchURL(twitterUrl),
                       tooltip: loc.detailsTwitter,
                     ),
                   ],
@@ -195,17 +195,26 @@ class HouseDetailsPage extends StatelessWidget {
                 const SizedBox(height: 12),
                 Center(
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.map),
-                    label: Text(loc.detailsMap),
+                    icon: Icon(
+                      Icons.map,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    label: Text(
+                      loc.detailsMap,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       elevation: 4,
                     ),
-                    onPressed: () => _openMap(context, latitude, longitude),
+                    onPressed: () => _launchURL(
+                        'https://www.google.com/maps/place/L\'OBERJ+Chahid+Zerguit+Ahmed/@35.0786183,-2.2047894,109m/data=!3m1!1e3!4m6!3m5!1s0xd78370072642247:0x9d47fb268e4dd34c!8m2!3d35.0788221!4d-2.204745!16s%2Fg%2F11ycykq89_?entry=ttu&g_ep=EgoyMDI1MDcwNy4wIKXMDSoASAFQAw%3D%3D'),
                   ),
                 ),
               ],

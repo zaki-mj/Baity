@@ -6,6 +6,7 @@ import 'package:baity/themes/theme_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/DiscoveryPage.dart';
 import 'package:baity/pages/AdminLoginPage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -15,6 +16,13 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception("Could not launch $url");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -39,7 +47,10 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
+              Expanded(
+                child: Container(),
+                flex: 15,
+              ),
               CircleAvatar(
                 radius: 60,
                 backgroundColor: theme.colorScheme.surface,
@@ -57,15 +68,20 @@ class _WelcomePageState extends State<WelcomePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                loc.slogan,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Text(
+                  loc.slogan,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 40),
+              Expanded(
+                child: Container(),
+                flex: 20,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Column(
@@ -119,10 +135,14 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                       ),
                     ),
+                    
                   ],
                 ),
               ),
-              const Spacer(),
+              Expanded(
+                child: Container(),
+                flex: 2,
+              ),
             ],
           ),
         ),

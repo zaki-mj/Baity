@@ -133,6 +133,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
       ),
       appBar: AppBar(
         title: Text(loc.exploreButton),
+        elevation: 0,
         bottom: TabBar(
           controller: _tabController,
           tabs: [
@@ -140,6 +141,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
             Tab(text: loc.tabYouthHouses),
             Tab(text: loc.tabYouthCamps),
           ],
+          labelColor: Colors.white,
+          unselectedLabelColor:
+              Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+          indicatorColor: Colors.white,
+          dividerColor: Colors.transparent,
         ),
       ),
       body: TabBarView(
@@ -160,13 +166,14 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                               name: house['name']!,
                               location: house['location']!,
                               imageUrl: house['imageUrl']!,
-                              availableSpots: 12,
-                              phone: '+201234567890',
+                              availableSpots: 20,
+                              phone: '0777665544',
                               email: 'info@youthhouse.com',
-                              facebookUrl: 'https://facebook.com/youthhouse',
-                              instagramUrl: 'https://instagram.com/youthhouse',
-                              twitterUrl: 'https://twitter.com/youthhouse',
-                              address: '123 Youth St, Cairo, Egypt',
+                              facebookUrl:
+                                  'https://www.facebook.com/odejtlemcen.tlemcen.1',
+                              instagramUrl: 'https://instagram.com',
+                              twitterUrl: 'https://twitter.com',
+                              address: 'Tlemcen, Algeria',
                               latitude: 30.0444,
                               longitude: 31.2357,
                             ),
