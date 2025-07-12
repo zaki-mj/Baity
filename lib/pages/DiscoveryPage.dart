@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
 import 'package:baity/pages/HouseDetailsPage.dart';
+import 'package:baity/pages/SettingsPage.dart';
+import 'package:baity/pages/AboutPage.dart';
 
 class DiscoveryPage extends StatefulWidget {
   const DiscoveryPage({Key? key}) : super(key: key);
@@ -84,49 +86,43 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                 ],
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text(
-                AppLocalizations.of(context)!.settings,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+            ListTile(
+              leading: Icon(
+                Icons.settings,
+                color: Theme.of(context).colorScheme.primary,
               ),
+              title: Text(
+                loc.settings,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsPage(),
+                  ),
+                );
+              },
             ),
-            Consumer<ThemeProvider>(
-              builder: (context, themeProvider, _) => SwitchListTile(
-                secondary: Icon(
-                  themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                title: Text(
-                  themeProvider.isDarkMode ? 'Dark Mode' : 'Light Mode',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                value: themeProvider.isDarkMode,
-                onChanged: (_) => themeProvider.toggleTheme(),
+            ListTile(
+              leading: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ),
-            Consumer<LocaleProvider>(
-              builder: (context, localeProvider, _) => SwitchListTile(
-                secondary: Icon(Icons.language,
-                    color: Theme.of(context).colorScheme.primary),
-                title: Text(
-                  localeProvider.locale.languageCode == 'ar'
-                      ? 'العربية'
-                      : 'English',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                value: localeProvider.locale.languageCode == 'ar',
-                onChanged: (val) {
-                  localeProvider
-                      .setLocale(val ? const Locale('ar') : const Locale('en'));
-                },
-                activeColor: Theme.of(context).colorScheme.primary,
-                inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+              title: Text(
+                loc.about,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutPage(),
+                  ),
+                );
+              },
             ),
           ],
         ),

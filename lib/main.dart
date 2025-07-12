@@ -7,8 +7,6 @@ import 'package:baity/local_provider.dart';
 import 'pages/HomePage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
-
 void main() {
   runApp(
     MultiProvider(
@@ -35,8 +33,9 @@ class BaityApp extends StatelessWidget {
       theme: themeProvider.theme,
       locale: localeProvider.locale,
       supportedLocales: const [
-        Locale('en'),
         Locale('ar'),
+        Locale('en'),
+        Locale('fr'),
       ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
