@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "541870458738",
+    "project_id": "baity-4b070",
+    "storage_bucket": "baity-4b070.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541870458738:android:00e3bdfd3c22d718dc7feb",
+        "android_client_info": {
+          "package_name": "com.example.baity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYuCGFvURplTlqsYlb1SI411nQWAmV51s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
 name: baity
 description: "A mobile youth house manager to discover places to stay."
 publish_to: 'none'
-version: 0.1.0
+version: 0.2.0
 
 environment:
   sdk: ^3.6.1
@@ -11,6 +11,9 @@ dependencies:
     sdk: flutter
   provider: ^6.1.5
   url_launcher: ^6.3.1
+  firebase_core: 2.27.0
+  cloud_firestore: 4.15.8
+  firebase_auth: 4.17.8
 
 dev_dependencies:
   flutter_test:

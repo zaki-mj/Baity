@@ -110,13 +110,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Access the admin dashboard',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -308,12 +301,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   const SizedBox(height: 24),
 
                   // Footer
-                  Text(
-                    'Secure admin access',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
                 ],
               ),
             ),

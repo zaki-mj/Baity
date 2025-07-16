@@ -4,10 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
-import 'pages/HomePage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  print("Firebase Initialized!");
   runApp(
     MultiProvider(
       providers: [
@@ -43,7 +46,7 @@ class BaityApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const WelcomePage(), // 👈 Make sure this exists
+      home: const WelcomePage(),
     );
   }
 }
