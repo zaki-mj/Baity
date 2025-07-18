@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/AddEditYouthHousePage.dart';
+import 'package:baity/widgets/AppDrawer.dart';
 
 class AdminDashboardPage extends StatelessWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -38,6 +39,8 @@ class AdminDashboardPage extends StatelessWidget {
     ];
 
     return Scaffold(
+      
+      drawer: const AppDrawer(),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

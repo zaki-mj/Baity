@@ -1,6 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/AdminDashboardPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+Future<void> loginAdmin(
+    String email, String password, BuildContext context) async {
+  try {
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    final user = userCredential.user;
+    if (user != null) {
+      print("Admin logged in: ${user.email}");
+      if (!context.mounted) return;
+      try {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const AdminDashboardPage()),
+        );
+      } catch (e) {
+        print("Navigation error: ${e}");
+      }
+    }
+  } catch (e) {
+    print("Login failed: $e");
+    // Show error to user
+  }
+}
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({Key? key}) : super(key: key);
@@ -21,27 +49,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
-  }
-
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      // Simulate login delay
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AdminDashboardPage(),
-          ),
-        );
-      });
-    }
   }
 
   @override
@@ -262,7 +269,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: _isLoading ? null : _handleLogin,
+                                onPressed: () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  await loginAdmin(
+                                    _usernameController.text,
+                                    _passwordController.text,
+                                    context,
+                                  );
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,

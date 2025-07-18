@@ -1,8 +1,4 @@
-import 'package:baity/local_provider.dart';
-import 'package:baity/pages/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:baity/themes/theme_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/DiscoveryPage.dart';
 import 'package:baity/pages/AdminLoginPage.dart';
