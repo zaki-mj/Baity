@@ -43,6 +43,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  bool _showValidationErrors = false;
 
   @override
   void dispose() {
@@ -145,6 +146,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       ),
                       child: Form(
                         key: _formKey,
+                        autovalidateMode: _showValidationErrors
+                            ? AutovalidateMode.always
+                            : AutovalidateMode.disabled,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -153,7 +157,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                               controller: _usernameController,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter username';
+                                  return loc.errorEnterEmail;
+                                }
+                                // Simple email validation
+                                if (!RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+")
+                                    .hasMatch(value)) {
+                                  return loc.errorValidEmail;
                                 }
                                 return null;
                               },
@@ -165,8 +174,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline,
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    width: 2,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
@@ -186,6 +206,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 filled: true,
                                 fillColor: theme.colorScheme.surface,
                               ),
+                              keyboardType: TextInputType.emailAddress,
                             ),
 
                             const SizedBox(height: 20),
@@ -196,7 +217,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                               obscureText: !_isPasswordVisible,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
+                                  return loc.errorEnterPassword;
+                                }
+                                if (value.length < 6) {
+                                  return loc.errorPasswordLength;
                                 }
                                 return null;
                               },
@@ -221,8 +245,19 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline,
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    width: 2,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
@@ -269,19 +304,27 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  await loginAdmin(
-                                    _usernameController.text,
-                                    _passwordController.text,
-                                    context,
-                                  );
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                },
+                                onPressed: _isLoading
+                                    ? null
+                                    : () async {
+                                        setState(() {
+                                          _showValidationErrors = true;
+                                        });
+                                        if (_formKey.currentState?.validate() ??
+                                            false) {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          await loginAdmin(
+                                            _usernameController.text,
+                                            _passwordController.text,
+                                            context,
+                                          );
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+                                        }
+                                      },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,

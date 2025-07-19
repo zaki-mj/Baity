@@ -82,5 +82,9 @@
   "delete": "Delete",
   "deletedSuccessfully": "{houseName} deleted successfully",
   "manageYouthHouses": "Manage youth houses and camps",
-  "locationsManaged": "{count} locations managed"
+  "locationsManaged": "{count} locations managed",
+  "errorEnterEmail": "Please enter your email",
+  "errorValidEmail": "Please enter a valid email",
+  "errorEnterPassword": "Please enter your password",
+  "errorPasswordLength": "Password must be at least 6 characters"
 }

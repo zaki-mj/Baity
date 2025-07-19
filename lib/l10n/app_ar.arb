@@ -83,5 +83,9 @@
   "delete": "حذف",
   "deletedSuccessfully": "تم حذف {houseName} بنجاح",
   "manageYouthHouses": "إدارة بيوت ومخيمات الشباب",
-  "locationsManaged": "{count} موقع مُدار"
+  "locationsManaged": "{count} موقع مُدار",
+  "errorEnterEmail": "يرجى إدخال بريدك الإلكتروني",
+  "errorValidEmail": "يرجى إدخال بريد إلكتروني صالح",
+  "errorEnterPassword": "يرجى إدخال كلمة المرور",
+  "errorPasswordLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
 }
