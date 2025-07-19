@@ -39,7 +39,9 @@ class AdminDashboardPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      
+      appBar: AppBar(
+        title: Text(loc.appTitle),
+      ),
       drawer: const AppDrawer(),
       body: Container(
         decoration: BoxDecoration(
