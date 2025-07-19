@@ -11,32 +11,7 @@ class AdminDashboardPage extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    final List<Map<String, dynamic>> allHouses = [
-      {
-        'name': loc.youthHouseName1,
-        'location': loc.youthHouseLocation1,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-        'availableSpots': 20,
-        'type': 'youth_house',
-      },
-      {
-        'name': loc.youthHouseName2,
-        'location': loc.youthHouseLocation2,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1465101046530-73398c7f28ca',
-        'availableSpots': 15,
-        'type': 'youth_camp',
-      },
-      {
-        'name': loc.youthHouseName3,
-        'location': loc.youthHouseLocation3,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429',
-        'availableSpots': 25,
-        'type': 'youth_house',
-      },
-    ];
+    final List<Map<String, dynamic>> allHouses = [];
 
     return Scaffold(
       appBar: AppBar(

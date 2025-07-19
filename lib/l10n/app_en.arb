@@ -86,5 +86,7 @@
   "errorEnterEmail": "Please enter your email",
   "errorValidEmail": "Please enter a valid email",
   "errorEnterPassword": "Please enter your password",
-  "errorPasswordLength": "Password must be at least 6 characters"
+  "errorPasswordLength": "Password must be at least 6 characters",
+  "loggedInAs": "Logged in as: {email}",
+  "logout": "Logout"
 }

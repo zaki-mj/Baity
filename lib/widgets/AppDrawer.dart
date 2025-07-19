@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/SettingsPage.dart';
 import 'package:baity/pages/AboutPage.dart';
+import 'package:baity/pages/welcome.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+    final user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -37,6 +41,18 @@ class AppDrawer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
+                if (user != null) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    loc.loggedInAs(user.email ?? ''),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withOpacity(0.8),
+                        ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -78,6 +94,30 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
+          if (user != null) ...[
+            ListTile(
+              leading: Icon(
+                Icons.logout_outlined,
+                color: Colors.red,
+              ),
+              title: Text(
+                loc.logout,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.red,
+                    ),
+              ),
+              onTap: () async {
+                Navigator.pop(context); // Close drawer
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const WelcomePage(),
+                  ),
+                  (route) => false, // Remove all previous routes
+                );
+              },
+            ),
+          ],
         ],
       ),
     );

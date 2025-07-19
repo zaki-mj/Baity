@@ -87,5 +87,7 @@
   "errorEnterEmail": "يرجى إدخال بريدك الإلكتروني",
   "errorValidEmail": "يرجى إدخال بريد إلكتروني صالح",
   "errorEnterPassword": "يرجى إدخال كلمة المرور",
-  "errorPasswordLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+  "errorPasswordLength": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "loggedInAs": "تم تسجيل الدخول كـ: {email}",
+  "logout": "تسجيل الخروج"
 }

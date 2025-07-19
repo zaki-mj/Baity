@@ -87,5 +87,7 @@
   "errorEnterEmail": "Veuillez entrer votre email",
   "errorValidEmail": "Veuillez entrer un email valide",
   "errorEnterPassword": "Veuillez entrer votre mot de passe",
-  "errorPasswordLength": "Le mot de passe doit comporter au moins 6 caractères"
+  "errorPasswordLength": "Le mot de passe doit comporter au moins 6 caractères",
+  "loggedInAs": "Connecté en tant que : {email}",
+  "logout": "Se déconnecter"
 } 

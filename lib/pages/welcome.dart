@@ -1,3 +1,5 @@
+import 'package:baity/pages/AdminDashboardPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/DiscoveryPage.dart';
@@ -118,11 +120,23 @@ class _WelcomePageState extends State<WelcomePage> {
                         shadowColor: theme.colorScheme.shadow,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AdminLoginPage()),
-                        );
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user != null) {
+                          // User is logged in, navigate to AdminDashboardPage
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AdminDashboardPage()),
+                            );
+                          });
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AdminLoginPage()),
+                          );
+                        }
                       },
                       child: Text(
                         loc.adminLogin,
@@ -131,7 +145,6 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                       ),
                     ),
-                    
                   ],
                 ),
               ),
