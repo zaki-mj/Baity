@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> loginAdmin(
     String email, String password, BuildContext context) async {
+  final loc = AppLocalizations.of(context)!;
   try {
     final UserCredential userCredential =
         await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -24,9 +25,22 @@ Future<void> loginAdmin(
         print("Navigation error: ${e}");
       }
     }
+  } on FirebaseAuthException catch (e) {
+    String errorMsg;
+    if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+      errorMsg = loc.errorWrongCredentials;
+    } else if (e.code == 'network-request-failed') {
+      errorMsg = loc.errorNetwork;
+    } else {
+      errorMsg = loc.errorUnknown;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMsg)),
+    );
   } catch (e) {
-    print("Login failed: $e");
-    // Show error to user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(loc.errorUnknown)),
+    );
   }
 }
 

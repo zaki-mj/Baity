@@ -89,5 +89,8 @@
   "errorEnterPassword": "Veuillez entrer votre mot de passe",
   "errorPasswordLength": "Le mot de passe doit comporter au moins 6 caractères",
   "loggedInAs": "Connecté en tant que : {email}",
-  "logout": "Se déconnecter"
+  "logout": "Se déconnecter",
+  "errorNetwork": "Erreur réseau. Veuillez vérifier votre connexion.",
+  "errorWrongCredentials": "Email ou mot de passe incorrect.",
+  "errorUnknown": "Une erreur inconnue s'est produite. Veuillez réessayer."
 } 
