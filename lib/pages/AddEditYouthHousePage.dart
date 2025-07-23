@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/services/StoreServices.dart';
+
+StoreServices _storeservices = StoreServices();
 
 class AddEditYouthHousePage extends StatefulWidget {
   final bool isEditing;
@@ -343,7 +346,19 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                             ],
                           ),
                           child: ElevatedButton(
-                            onPressed: _isLoading ? null : _handleSave,
+                            //onPressed: _isLoading ? null : _handleSave,
+                            onPressed: () {
+                              StoreServices().createPlace(
+                                name: _nameController.text,
+                                location: _addressController.text,
+                                facebook: _facebookUrlController.text,
+                                instagram: _instagramUrlController.text,
+                                email: _emailController.text,
+                                phone: _phoneController.text,
+                                twitter: _twitterUrlController.text,
+                                description: _descriptionController.text,
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
