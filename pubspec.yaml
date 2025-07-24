@@ -26,6 +26,9 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - lib\assets\data\algeria_cities.json
+
 
 l10n:
   arb-dir: lib/l10n

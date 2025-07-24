@@ -92,5 +92,7 @@
   "logout": "Se déconnecter",
   "errorNetwork": "Erreur réseau. Veuillez vérifier votre connexion.",
   "errorWrongCredentials": "Email ou mot de passe incorrect.",
-  "errorUnknown": "Une erreur inconnue s'est produite. Veuillez réessayer."
+  "errorUnknown": "Une erreur inconnue s'est produite. Veuillez réessayer.",
+  "state": "Wilaya",
+  "city": "Commune"
 } 

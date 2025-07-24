@@ -91,5 +91,7 @@
   "logout": "Logout",
   "errorNetwork": "Network error. Please check your connection.",
   "errorWrongCredentials": "Incorrect email or password.",
-  "errorUnknown": "An unknown error occurred. Please try again."
+  "errorUnknown": "An unknown error occurred. Please try again.",
+  "state": "State",
+  "city": "City"
 }

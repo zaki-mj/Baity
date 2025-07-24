@@ -174,7 +174,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                             //         (data['imageUrl'] as String).isNotEmpty)
                             //     ? data['imageUrl']
                             //     : 'https://ibb.co/dsGmv6Wv',
-                            availableSpots: data['availableSpots'] ?? 0,
+                            availableSpots: data['spots'] ?? 0,
                             phone: data['phone'] ?? '',
                             email: data['email'] ?? '',
                             facebookUrl: data['facebookUrl'] ?? '',

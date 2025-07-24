@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -6,7 +8,7 @@ class StoreServices {
     required String name,
     String? location,
     String? type,
-    String? numberOfSpots,
+    int? numberOfSpots,
     String? phone,
     String? email,
     String? facebook,

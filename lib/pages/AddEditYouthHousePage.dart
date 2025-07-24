@@ -1,8 +1,13 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/services/StoreServices.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:baity/services/location_service.dart';
+import 'package:baity/widgets/SectionCard.dart';
+import 'package:baity/widgets/CustomTextField.dart';
+import 'package:baity/widgets/TypeSelector.dart';
 
 StoreServices _storeservices = StoreServices();
 
@@ -18,6 +23,13 @@ class AddEditYouthHousePage extends StatefulWidget {
 
   @override
   State<AddEditYouthHousePage> createState() => _AddEditYouthHousePageState();
+}
+
+Future<List<Map<String, dynamic>>> loadWilayas() async {
+  final String jsonString = await rootBundle
+      .loadString('assets/data/algeria_wilayas_communes_cleaned.json');
+  final List<dynamic> jsonData = json.decode(jsonString);
+  return jsonData.cast<Map<String, dynamic>>();
 }
 
 class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
@@ -40,6 +52,11 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   double _longitude = -2.2047;
   bool _isLoading = false;
 
+  String? selectedStateCode;
+  String? selectedCityName;
+  List<Map<String, dynamic>> states = [];
+  List<Map<String, dynamic>> cities = [];
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +76,16 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
       _latitude = widget.houseData!['latitude'] ?? 35.0786;
       _longitude = widget.houseData!['longitude'] ?? -2.2047;
     }
+  }
+
+  Future<void> _loadStates(Locale locale) async {
+    states = await AlgeriaLocationService.getStates(locale);
+    setState(() {});
+  }
+
+  Future<void> _loadCities(String stateCode, Locale locale) async {
+    cities = await AlgeriaLocationService.getCitiesForState(stateCode, locale);
+    setState(() {});
   }
 
   @override
@@ -106,6 +133,11 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context);
+
+    if (states.isEmpty) {
+      _loadStates(locale);
+    }
 
     return Scaffold(
       body: Container(
@@ -200,12 +232,12 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                     child: Column(
                       children: [
                         // Basic Information Card
-                        _buildSectionCard(
+                        SectionCard(
                           theme,
                           loc.basicInformation,
                           Icons.info_outline,
                           [
-                            _buildTextField(
+                            CustomTextField(
                               controller: _nameController,
                               label: loc.name,
                               icon: Icons.home,
@@ -217,19 +249,92 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               },
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
-                              controller: _locationController,
-                              label: loc.location,
-                              icon: Icons.location_on,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return loc.pleaseEnterLocation;
-                                }
-                                return null;
+                            DropdownButtonFormField<String>(
+                              value: selectedStateCode,
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.state,
+                                prefixIcon: Icon(Icons.location_city,
+                                    color: theme.colorScheme.primary),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.outline,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.5),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.primary,
+                                    width: 2,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: theme.colorScheme.surface,
+                              ),
+                              items: states.map((state) {
+                                return DropdownMenuItem<String>(
+                                  value: state['code'],
+                                  child: Text(
+                                      '${state['code']} - ${state['name']}'),
+                                );
+                              }).toList(),
+                              onChanged: (value) async {
+                                selectedStateCode = value;
+                                selectedCityName = null;
+                                await _loadCities(value!, locale);
                               },
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            DropdownButtonFormField<String>(
+                              value: selectedCityName,
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.city,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.outline,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.5),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: theme.colorScheme.primary,
+                                    width: 2,
+                                  ),
+                                ),
+                                filled: true,
+                                fillColor: theme.colorScheme.surface,
+                              ),
+                              items: cities.map((city) {
+                                return DropdownMenuItem<String>(
+                                  value: city['name'],
+                                  child: Text(city['name']),
+                                );
+                              }).toList(),
+                              onChanged: selectedStateCode == null
+                                  ? null
+                                  : (value) {
+                                      setState(() {
+                                        selectedCityName = value;
+                                      });
+                                    },
+                            ),
+                            const SizedBox(height: 16),
+                            CustomTextField(
                               controller: _imageUrlController,
                               label: loc.imageUrl,
                               icon: Icons.image,
@@ -241,7 +346,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               },
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            CustomTextField(
                               keyboardType: TextInputType.number,
                               controller: _NumberOfSpotsController,
                               label: loc.location,
@@ -254,7 +359,14 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               },
                             ),
                             const SizedBox(height: 16),
-                            _buildTypeSelector(theme, loc),
+                            TypeSelector(
+                              selectedType: _selectedType,
+                              onTypeChanged: (value) {
+                                setState(() {
+                                  _selectedType = value!;
+                                });
+                              },
+                            ),
                             const SizedBox(height: 16),
                           ],
                         ),
@@ -262,26 +374,26 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                         const SizedBox(height: 24),
 
                         // Contact Information Card
-                        _buildSectionCard(
+                        SectionCard(
                           theme,
                           loc.contactInformation,
                           Icons.contact_phone,
                           [
-                            _buildTextField(
+                            CustomTextField(
                               controller: _phoneController,
                               label: loc.phone,
                               icon: Icons.phone,
                               keyboardType: TextInputType.phone,
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            CustomTextField(
                               controller: _emailController,
                               label: loc.email,
                               icon: Icons.email,
                               keyboardType: TextInputType.emailAddress,
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            CustomTextField(
                               controller: _addressController,
                               label: loc.address,
                               icon: Icons.map,
@@ -293,24 +405,24 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                         const SizedBox(height: 24),
 
                         // Social Media Card
-                        _buildSectionCard(
+                        SectionCard(
                           theme,
                           loc.socialMedia,
                           Icons.share,
                           [
-                            _buildTextField(
+                            CustomTextField(
                               controller: _facebookUrlController,
                               label: loc.facebookUrl,
                               icon: Icons.facebook,
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            CustomTextField(
                               controller: _instagramUrlController,
                               label: loc.instagramUrl,
                               icon: Icons.camera_alt,
                             ),
                             const SizedBox(height: 16),
-                            _buildTextField(
+                            CustomTextField(
                               controller: _twitterUrlController,
                               label: loc.twitterUrl,
                               icon: Icons.alternate_email,
@@ -321,12 +433,12 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                         const SizedBox(height: 24),
 
                         // Description Card
-                        _buildSectionCard(
+                        SectionCard(
                           theme,
                           loc.description,
                           Icons.description,
                           [
-                            _buildTextField(
+                            CustomTextField(
                               controller: _descriptionController,
                               label: loc.description,
                               icon: Icons.text_fields,
@@ -365,7 +477,12 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                             onPressed: () {
                               StoreServices().createPlace(
                                 name: _nameController.text,
-                                location: _addressController.text,
+                                location: (selectedStateCode != null &&
+                                        selectedCityName != null)
+                                    ? (selectedStateCode! +
+                                        ' - ' +
+                                        selectedCityName!)
+                                    : '',
                                 ImageUrl: _imageUrlController.text,
                                 facebook: _facebookUrlController.text,
                                 instagram: _instagramUrlController.text,
@@ -373,7 +490,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 phone: _phoneController.text,
                                 twitter: _twitterUrlController.text,
                                 description: _descriptionController.text,
-                                numberOfSpots: _NumberOfSpotsController.text,
+                                numberOfSpots:
+                                    int.parse(_NumberOfSpotsController.text),
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -415,151 +533,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSectionCard(
-      ThemeData theme, String title, IconData icon, List<Widget> children) {
-    return Card(
-      elevation: 6,
-      shadowColor: theme.colorScheme.primary.withOpacity(0.2),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              theme.colorScheme.surface,
-              theme.colorScheme.surface.withOpacity(0.9),
-            ],
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  icon,
-                  color: theme.colorScheme.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    TextInputType? keyboardType,
-    int maxLines = 1,
-    String? Function(String?)? validator,
-  }) {
-    final theme = Theme.of(context);
-
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(
-          icon,
-          color: theme.colorScheme.primary,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.colorScheme.outline,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.colorScheme.outline.withOpacity(0.5),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-            width: 2,
-          ),
-        ),
-        filled: true,
-        fillColor: theme.colorScheme.surface,
-      ),
-    );
-  }
-
-  Widget _buildTypeSelector(ThemeData theme, AppLocalizations loc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          loc.type,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: theme.colorScheme.outline.withOpacity(0.5),
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButtonFormField<String>(
-            value: _selectedType,
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.category,
-                color: theme.colorScheme.primary,
-              ),
-              border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            items: [
-              DropdownMenuItem(
-                value: 'youth_house',
-                child: Text(loc.tabYouthHouses),
-              ),
-              DropdownMenuItem(
-                value: 'youth_camp',
-                child: Text(loc.tabYouthCamps),
-              ),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _selectedType = value!;
-              });
-            },
-          ),
-        ),
-      ],
     );
   }
 }
