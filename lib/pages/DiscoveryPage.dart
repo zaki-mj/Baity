@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/widgets/YouthHouseCard.dart';
@@ -7,6 +8,9 @@ import 'package:baity/local_provider.dart';
 import 'package:baity/pages/HouseDetailsPage.dart';
 import 'package:baity/pages/SettingsPage.dart';
 import 'package:baity/pages/AboutPage.dart';
+import 'package:baity/services/StoreServices.dart';
+
+StoreServices _storeServices = StoreServices();
 
 class DiscoveryPage extends StatefulWidget {
   const DiscoveryPage({Key? key}) : super(key: key);
@@ -34,26 +38,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final List<Map<String, String>> allHouses = [
-      {
-        'name': loc.youthHouseName1,
-        'location': loc.youthHouseLocation1,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-      },
-      {
-        'name': loc.youthHouseName2,
-        'location': loc.youthHouseLocation2,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1465101046530-73398c7f28ca',
-      },
-      {
-        'name': loc.youthHouseName3,
-        'location': loc.youthHouseLocation3,
-        'imageUrl':
-            'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429',
-      },
-    ];
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -147,70 +132,75 @@ class _DiscoveryPageState extends State<DiscoveryPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          // All
-          ListView(
-            children: allHouses
-                .map((house) => YouthHouseCard(
-                      name: house['name']!,
-                      location: house['location']!,
-                      imageUrl: house['imageUrl']!,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HouseDetailsPage(
-                              name: house['name']!,
-                              location: house['location']!,
-                              imageUrl: house['imageUrl']!,
-                              availableSpots: 20,
-                              phone: '0777665544',
-                              email: 'info@youthhouse.com',
-                              facebookUrl:
-                                  'https://www.facebook.com/odejtlemcen.tlemcen.1',
-                              instagramUrl: 'https://instagram.com',
-                              twitterUrl: 'https://twitter.com',
-                              address: 'Tlemcen, Algeria',
-                              latitude: 30.0444,
-                              longitude: 31.2357,
-                            ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('places')
+                .orderBy('createdAt', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error loading data'));
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final docs = snapshot.data!.docs;
+
+              if (docs.isEmpty) {
+                return Center(child: Text('No places found'));
+              }
+              return ListView.builder(
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data = docs[index].data() as Map<String, dynamic>;
+                  return YouthHouseCard(
+                    name: data['name'] ?? 'Unnamed',
+                    location: data['location'] ?? '',
+                    imageUrl: (data['imageUrl'] != null &&
+                            (data['imageUrl'] as String).isNotEmpty)
+                        ? data['imageUrl']
+                        : 'https://via.placeholder.com/100',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HouseDetailsPage(
+                            name: data['name'] ?? 'Unnamed',
+                            location: data['location'] ?? '',
+                            imageUrl: (data['imageUrl'] != null &&
+                                    (data['imageUrl'] as String).isNotEmpty)
+                                ? data['imageUrl']
+                                : 'https://via.placeholder.com/100',
+                            availableSpots: data['availableSpots'] ?? 0,
+                            phone: data['phone'] ?? '',
+                            email: data['email'] ?? '',
+                            facebookUrl: data['facebookUrl'] ?? '',
+                            instagramUrl: data['instagramUrl'] ?? '',
+                            twitterUrl: data['twitterUrl'] ?? '',
+                            address: data['address'] ?? '',
+                            latitude: (data['latitude'] is double)
+                                ? data['latitude']
+                                : (data['latitude'] is int)
+                                    ? (data['latitude'] as int).toDouble()
+                                    : 0.0,
+                            longitude: (data['longitude'] is double)
+                                ? data['longitude']
+                                : (data['longitude'] is int)
+                                    ? (data['longitude'] as int).toDouble()
+                                    : 0.0,
                           ),
-                        );
-                      },
-                    ))
-                .toList(),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
           ),
-          // Youth Houses (first and third)
-          ListView(
-            children: [0, 2]
-                .map((i) => YouthHouseCard(
-                      name: allHouses[i]['name']!,
-                      location: allHouses[i]['location']!,
-                      imageUrl: allHouses[i]['imageUrl']!,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Placeholder()));
-                      },
-                    ))
-                .toList(),
-          ),
-          // Youth Camps (second)
-          ListView(
-            children: [1]
-                .map((i) => YouthHouseCard(
-                      name: allHouses[i]['name']!,
-                      location: allHouses[i]['location']!,
-                      imageUrl: allHouses[i]['imageUrl']!,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Placeholder()));
-                      },
-                    ))
-                .toList(),
-          ),
+          Text('datad'),
+          Text('dataf'),
         ],
       ),
     );

@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// The error is caused by the use of the `const` constructor in a class that has non-final fields.
+// In this class, the field `String? imageUrl;` is not marked as `final`, but the constructor is declared as `const`.
+// In Dart, a `const` constructor can only be used if all instance fields are `final` (i.e., immutable after construction).
+// To fix the error, either make all fields `final`, or remove the `const` keyword from the constructor.
+// Here is the corrected code by making `imageUrl` final:
+
 class HouseDetailsPage extends StatelessWidget {
   final String name;
   final String location;
-  final String imageUrl;
+  final String? imageUrl; // Changed to final
   final int availableSpots;
   final String phone;
   final String email;
@@ -20,7 +26,7 @@ class HouseDetailsPage extends StatelessWidget {
     Key? key,
     required this.name,
     required this.location,
-    required this.imageUrl,
+    this.imageUrl, // Added to constructor (optional)
     required this.availableSpots,
     required this.phone,
     required this.email,
@@ -73,12 +79,9 @@ class HouseDetailsPage extends StatelessWidget {
               bottomLeft: Radius.circular(32),
               bottomRight: Radius.circular(32),
             ),
-            child: Image.network(
-              imageUrl,
-              height: 220,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: imageUrl != null
+                ? Image.network(imageUrl!, fit: BoxFit.cover)
+                : Text("no image"),
           ),
           Padding(
             padding: const EdgeInsets.all(24.0),

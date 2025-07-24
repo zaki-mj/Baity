@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/services/StoreServices.dart';
@@ -23,6 +25,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   final _nameController = TextEditingController();
   final _locationController = TextEditingController();
   final _imageUrlController = TextEditingController();
+  final _NumberOfSpotsController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
@@ -238,9 +241,21 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               },
                             ),
                             const SizedBox(height: 16),
+                            _buildTextField(
+                              keyboardType: TextInputType.number,
+                              controller: _NumberOfSpotsController,
+                              label: loc.location,
+                              icon: Icons.hotel,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return loc.pleaseEnterLocation;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
                             _buildTypeSelector(theme, loc),
                             const SizedBox(height: 16),
-                            _buildSpotsSelector(theme, loc),
                           ],
                         ),
 
@@ -357,6 +372,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 phone: _phoneController.text,
                                 twitter: _twitterUrlController.text,
                                 description: _descriptionController.text,
+                                numberOfSpots: _NumberOfSpotsController.text,
                               );
                             },
                             style: ElevatedButton.styleFrom(
@@ -541,51 +557,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
               });
             },
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSpotsSelector(ThemeData theme, AppLocalizations loc) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '${loc.availableSpots}: $_availableSpots',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Slider(
-          value: _availableSpots.toDouble(),
-          min: 1,
-          max: 100,
-          divisions: 99,
-          activeColor: theme.colorScheme.primary,
-          inactiveColor: theme.colorScheme.primary.withOpacity(0.3),
-          onChanged: (value) {
-            setState(() {
-              _availableSpots = value.round();
-            });
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '1',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
-              ),
-            ),
-            Text(
-              '100',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
-              ),
-            ),
-          ],
         ),
       ],
     );

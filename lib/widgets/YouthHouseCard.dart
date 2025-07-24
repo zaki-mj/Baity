@@ -16,6 +16,7 @@ class YouthHouseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool hasImage = imageUrl.isNotEmpty;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 4,
@@ -30,18 +31,25 @@ class YouthHouseCard extends StatelessWidget {
                 topLeft: Radius.circular(16),
                 bottomLeft: Radius.circular(16),
               ),
-              child: Image.network(
-                imageUrl,
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.image, size: 40),
-                ),
-              ),
+              child: hasImage
+                  ? Image.network(
+                      imageUrl,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.image, size: 40),
+                      ),
+                    )
+                  : Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image, size: 40),
+                    ),
             ),
             const SizedBox(width: 16),
             Expanded(
