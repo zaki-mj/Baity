@@ -13,12 +13,14 @@ class StoreServices {
     String? instagram,
     String? twitter,
     String? description,
+    String? ImageUrl,
   }) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     await FirebaseFirestore.instance.collection('places').add({
       'name': name,
       'location': location,
+      'ImageUrl': ImageUrl,
       'type': type,
       'spots': numberOfSpots,
       'phone': phone,

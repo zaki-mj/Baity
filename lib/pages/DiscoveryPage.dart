@@ -158,10 +158,10 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                   return YouthHouseCard(
                     name: data['name'] ?? 'Unnamed',
                     location: data['location'] ?? '',
-                    imageUrl: (data['imageUrl'] != null &&
-                            (data['imageUrl'] as String).isNotEmpty)
-                        ? data['imageUrl']
-                        : 'https://via.placeholder.com/100',
+                    imageUrl: (data['ImageUrl'] != null &&
+                            (data['ImageUrl'] as String).isNotEmpty)
+                        ? data['ImageUrl']
+                        : 'https://i.ibb.co/4wP1LMmL/20530961.jpg',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -169,10 +169,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                           builder: (context) => HouseDetailsPage(
                             name: data['name'] ?? 'Unnamed',
                             location: data['location'] ?? '',
-                            imageUrl: (data['imageUrl'] != null &&
-                                    (data['imageUrl'] as String).isNotEmpty)
-                                ? data['imageUrl']
-                                : 'https://via.placeholder.com/100',
+                            imageUrl: data['ImageUrl'],
+                            // imageUrl: (data['imageUrl'] != null &&
+                            //         (data['imageUrl'] as String).isNotEmpty)
+                            //     ? data['imageUrl']
+                            //     : 'https://ibb.co/dsGmv6Wv',
                             availableSpots: data['availableSpots'] ?? 0,
                             phone: data['phone'] ?? '',
                             email: data['email'] ?? '',

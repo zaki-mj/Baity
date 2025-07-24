@@ -366,6 +366,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               StoreServices().createPlace(
                                 name: _nameController.text,
                                 location: _addressController.text,
+                                ImageUrl: _imageUrlController.text,
                                 facebook: _facebookUrlController.text,
                                 instagram: _instagramUrlController.text,
                                 email: _emailController.text,
