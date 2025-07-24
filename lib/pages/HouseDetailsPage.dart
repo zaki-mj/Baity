@@ -1,14 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// The error is caused by the use of the `const` constructor in a class that has non-final fields.
-// In this class, the field `String? imageUrl;` is not marked as `final`, but the constructor is declared as `const`.
-// In Dart, a `const` constructor can only be used if all instance fields are `final` (i.e., immutable after construction).
-// To fix the error, either make all fields `final`, or remove the `const` keyword from the constructor.
-// Here is the corrected code by making `imageUrl` final:
 
 class HouseDetailsPage extends StatelessWidget {
   final String name;

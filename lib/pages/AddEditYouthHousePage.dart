@@ -103,32 +103,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
     super.dispose();
   }
 
-  void _handleSave() {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      // Simulate save delay
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _isLoading = false;
-        });
-
-        final loc = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                widget.isEditing ? loc.youthHouseUpdated : loc.youthHouseAdded),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-
-        Navigator.pop(context);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -338,18 +312,18 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               controller: _imageUrlController,
                               label: loc.imageUrl,
                               icon: Icons.image,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return loc.pleaseEnterImageUrl;
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return loc.pleaseEnterImageUrl;
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 16),
                             CustomTextField(
                               keyboardType: TextInputType.number,
                               controller: _NumberOfSpotsController,
-                              label: loc.location,
+                              label: loc.availableSpots,
                               icon: Icons.hotel,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -475,24 +449,68 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                           child: ElevatedButton(
                             //onPressed: _isLoading ? null : _handleSave,
                             onPressed: () {
-                              StoreServices().createPlace(
-                                name: _nameController.text,
-                                location: (selectedStateCode != null &&
-                                        selectedCityName != null)
-                                    ? (selectedStateCode! +
-                                        ' - ' +
-                                        selectedCityName!)
-                                    : '',
-                                ImageUrl: _imageUrlController.text,
-                                facebook: _facebookUrlController.text,
-                                instagram: _instagramUrlController.text,
-                                email: _emailController.text,
-                                phone: _phoneController.text,
-                                twitter: _twitterUrlController.text,
-                                description: _descriptionController.text,
-                                numberOfSpots:
-                                    int.parse(_NumberOfSpotsController.text),
-                              );
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                // Simulate save delay
+                                Future.delayed(const Duration(seconds: 1),
+                                    () async {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+
+                                  final loc = AppLocalizations.of(context)!;
+
+                                  // Find the selected state and city objects
+                                  final selectedState = states.firstWhere(
+                                      (state) =>
+                                          state['code'] == selectedStateCode);
+                                  final selectedCity = cities.firstWhere(
+                                      (city) =>
+                                          city['name'] == selectedCityName);
+
+                                  // Remove the 'cities' field from the state object
+                                  final filteredState =
+                                      Map<String, dynamic>.from(selectedState)
+                                        ..remove('cities');
+
+                                  // Call the createPlace method with the filtered state and city objects
+                                  await _storeservices.createPlace(
+                                    name: _nameController.text,
+                                    location: selectedStateCode != null &&
+                                            selectedCityName != null
+                                        ? '${filteredState['name']} - ${selectedCity['name']}'
+                                        : '',
+                                    type: _selectedType,
+                                    numberOfSpots: int.tryParse(
+                                        _NumberOfSpotsController.text),
+                                    phone: _phoneController.text,
+                                    email: _emailController.text,
+                                    facebook: _facebookUrlController.text,
+                                    instagram: _instagramUrlController.text,
+                                    twitter: _twitterUrlController.text,
+                                    description: _descriptionController.text,
+                                    ImageUrl: _imageUrlController.text,
+                                    // Include the filtered state and city objects
+                                    state: filteredState,
+                                    city: selectedCity,
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(widget.isEditing
+                                          ? loc.youthHouseUpdated
+                                          : loc.youthHouseAdded),
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                  );
+
+                                  Navigator.pop(context);
+                                });
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,

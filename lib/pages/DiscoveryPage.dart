@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/widgets/YouthHouseCard.dart';
-import 'package:provider/provider.dart';
-import 'package:baity/themes/theme_provider.dart';
-import 'package:baity/local_provider.dart';
 import 'package:baity/pages/HouseDetailsPage.dart';
 import 'package:baity/pages/SettingsPage.dart';
 import 'package:baity/pages/AboutPage.dart';
@@ -38,6 +35,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     return Scaffold(
       drawer: Drawer(
@@ -155,12 +153,17 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                 itemCount: docs.length,
                 itemBuilder: (context, index) {
                   final data = docs[index].data() as Map<String, dynamic>;
+
                   return YouthHouseCard(
                     name: data['name'] ?? 'Unnamed',
-                    location: data['location'] ?? '',
-                    imageUrl: (data['ImageUrl'] != null &&
-                            (data['ImageUrl'] as String).isNotEmpty)
-                        ? data['ImageUrl']
+                    location: isArabic
+                        ? (data['state']['name_ar'] +
+                            ', ' +
+                            data['city']['name_ar'])
+                        : (data['state']['name_fr'] + ', ' + data['city']['name_fr']),
+                    imageUrl: (data['imageUrl'] != null &&
+                            (data['imageUrl'] as String).isNotEmpty)
+                        ? data['imageUrl']
                         : 'https://i.ibb.co/4wP1LMmL/20530961.jpg',
                     onTap: () {
                       Navigator.push(
@@ -168,8 +171,14 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                         MaterialPageRoute(
                           builder: (context) => HouseDetailsPage(
                             name: data['name'] ?? 'Unnamed',
-                            location: data['location'] ?? '',
-                            imageUrl: data['ImageUrl'],
+                            location: isArabic
+                                ? (data['state']['name_ar'] +
+                                    ', ' +
+                                    data['city']['name_ar'])
+                                : (data['state']['name_fr'] +
+                                    ', ' +
+                                    data['city']['name_fr']),
+                            imageUrl: data['imageUrl'],
                             // imageUrl: (data['imageUrl'] != null &&
                             //         (data['imageUrl'] as String).isNotEmpty)
                             //     ? data['imageUrl']

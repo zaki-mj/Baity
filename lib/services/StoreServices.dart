@@ -16,6 +16,8 @@ class StoreServices {
     String? twitter,
     String? description,
     String? ImageUrl,
+    Map<String, dynamic>? state, // Add state object
+    Map<String, dynamic>? city,  // Add city object
   }) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -27,9 +29,12 @@ class StoreServices {
       'spots': numberOfSpots,
       'phone': phone,
       'email': email,
-      'facebbok': facebook,
+      'facebook': facebook,
       'instagram': instagram,
-      'twitter': description,
+      'twitter': twitter,
+      'description': description,
+      'state': state, // Store the state object
+      'city': city,   // Store the city object
       'createdBy': uid,
       'createdAt': FieldValue.serverTimestamp(),
     });
