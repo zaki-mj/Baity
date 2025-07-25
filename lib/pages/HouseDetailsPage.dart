@@ -20,7 +20,7 @@ class HouseDetailsPage extends StatelessWidget {
     Key? key,
     required this.name,
     required this.location,
-    this.imageUrl, // Added to constructor (optional)
+    this.imageUrl,
     required this.availableSpots,
     required this.phone,
     required this.email,
@@ -121,17 +121,11 @@ class HouseDetailsPage extends StatelessWidget {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            Icon(Icons.people,
-                                color: theme.colorScheme.secondary),
+                            Icon(Icons.hotel, color: theme.colorScheme.primary),
                             const SizedBox(width: 6),
                             Text('${loc.detailsSpots}: $availableSpots',
                                 style: theme.textTheme.bodyMedium),
                           ],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          loc.detailsDescription,
-                          style: theme.textTheme.bodyMedium,
                         ),
                       ],
                     ),

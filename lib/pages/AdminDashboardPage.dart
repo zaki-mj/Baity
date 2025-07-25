@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/pages/AddEditYouthHousePage.dart';
 import 'package:baity/widgets/AppDrawer.dart';
+import 'package:baity/widgets/AdminYouthHouseCard.dart';
 
 class AdminDashboardPage extends StatelessWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -126,233 +128,57 @@ class AdminDashboardPage extends StatelessWidget {
               ),
 
               // Content Section
+              //
+              //
+              //
+              //
+              //
               Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: allHouses.length,
-                  itemBuilder: (context, index) {
-                    final house = allHouses[index];
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Card(
-                        elevation: 6,
-                        shadowColor: theme.colorScheme.primary.withOpacity(0.2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                theme.colorScheme.surface,
-                                theme.colorScheme.surface.withOpacity(0.9),
-                              ],
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              // Image Section
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Image.network(
-                                      house['imageUrl'],
-                                      height: 160,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                      top: 12,
-                                      right: 12,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: house['type'] == 'youth_house'
-                                              ? Colors.blue.withOpacity(0.9)
-                                              : Colors.green.withOpacity(0.9),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Text(
-                                          house['type'] == 'youth_house'
-                                              ? loc.tabYouthHouses
-                                              : loc.tabYouthCamps,
-                                          style: theme.textTheme.bodySmall
-                                              ?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                // Set a fixed height or wrap in Expanded
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('places')
+                      .orderBy('createdAt', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading data'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final docs = snapshot.data!.docs;
+
+                    if (docs.isEmpty) {
+                      return const Center(child: Text('No places found'));
+                    }
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: docs.length,
+                      itemBuilder: (context, index) {
+                        final doc = docs[index];
+                        final house = doc.data() as Map<String, dynamic>;
+
+                        return AdminYouthHouseCard(
+                          house: house,
+                          onEdit: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddEditYouthHousePage(
+                                  isEditing: true,
+                                  houseData: house,
                                 ),
                               ),
-
-                              // Content Section
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                house['name'],
-                                                style: theme
-                                                    .textTheme.titleMedium
-                                                    ?.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 4),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.location_on,
-                                                    size: 16,
-                                                    color: theme
-                                                        .colorScheme.primary,
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  Expanded(
-                                                    child: Text(
-                                                      house['location'],
-                                                      style: theme
-                                                          .textTheme.bodyMedium
-                                                          ?.copyWith(
-                                                        color: theme.colorScheme
-                                                            .onSurface
-                                                            .withOpacity(0.7),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                            vertical: 6,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: theme.colorScheme.secondary
-                                                .withOpacity(0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            border: Border.all(
-                                              color: theme.colorScheme.secondary
-                                                  .withOpacity(0.3),
-                                            ),
-                                          ),
-                                          child: Text(
-                                            '${house['availableSpots']} ${loc.availableSpots}',
-                                            style: theme.textTheme.bodySmall
-                                                ?.copyWith(
-                                              color:
-                                                  theme.colorScheme.secondary,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    const SizedBox(height: 16),
-
-                                    // Action Buttons
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: ElevatedButton.icon(
-                                            icon: Icon(
-                                              Icons.edit,
-                                              size: 18,
-                                              color:
-                                                  theme.colorScheme.onPrimary,
-                                            ),
-                                            label: Text(
-                                              loc.editData,
-                                              style: TextStyle(
-                                                color:
-                                                    theme.colorScheme.onPrimary,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  theme.colorScheme.primary,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 12),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AddEditYouthHousePage(
-                                                    isEditing: true,
-                                                    houseData: house,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.red.withOpacity(0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            border: Border.all(
-                                              color:
-                                                  Colors.red.withOpacity(0.3),
-                                            ),
-                                          ),
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.delete_outline,
-                                              color: Colors.red,
-                                              size: 20,
-                                            ),
-                                            onPressed: () {
-                                              _showDeleteDialog(
-                                                  context, house['name']);
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            );
+                          },
+                          onDelete: () {
+                            _showDeleteDialog(context, house['name'], doc.id);
+                          },
+                        );
+                      },
                     );
                   },
                 ),
@@ -409,26 +235,44 @@ class AdminDashboardPage extends StatelessWidget {
     );
   }
 
-  void _showDeleteDialog(BuildContext context, String houseName) {
+  void _showDeleteDialog(BuildContext context, String houseName, String docId) {
+    final scaffoldMessenger =
+        ScaffoldMessenger.of(context); 
+
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        final loc = AppLocalizations.of(context)!;
+      builder: (BuildContext dialogContext) {
+        final loc = AppLocalizations.of(dialogContext)!;
+
         return AlertDialog(
           title: Text('Delete $houseName?'),
           content: Text(loc.deleteConfirmation),
           actions: [
             TextButton(
               child: Text(loc.cancel),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
             ),
             TextButton(
               child: Text(loc.delete, style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('$houseName deleted successfully')),
-                );
+              onPressed: () async {
+                Navigator.of(dialogContext)
+                    .pop(); 
+
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('places')
+                      .doc(docId)
+                      .delete();
+
+                  scaffoldMessenger.showSnackBar(
+                    // ✅ Use the stored safe context
+                    SnackBar(content: Text('$houseName deleted successfully')),
+                  );
+                } catch (e) {
+                  scaffoldMessenger.showSnackBar(
+                    SnackBar(content: Text('Error deleting: $e')),
+                  );
+                }
               },
             ),
           ],

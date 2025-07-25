@@ -17,14 +17,14 @@ class StoreServices {
     String? description,
     String? ImageUrl,
     Map<String, dynamic>? state, // Add state object
-    Map<String, dynamic>? city,  // Add city object
+    Map<String, dynamic>? city, // Add city object
   }) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     await FirebaseFirestore.instance.collection('places').add({
       'name': name,
       'location': location,
-      'ImageUrl': ImageUrl,
+      'imageUrl': ImageUrl,
       'type': type,
       'spots': numberOfSpots,
       'phone': phone,
@@ -34,7 +34,7 @@ class StoreServices {
       'twitter': twitter,
       'description': description,
       'state': state, // Store the state object
-      'city': city,   // Store the city object
+      'city': city, // Store the city object
       'createdBy': uid,
       'createdAt': FieldValue.serverTimestamp(),
     });

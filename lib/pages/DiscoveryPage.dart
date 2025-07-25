@@ -158,9 +158,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                     name: data['name'] ?? 'Unnamed',
                     location: isArabic
                         ? (data['state']['name_ar'] +
-                            ', ' +
+                            '، ' +
                             data['city']['name_ar'])
-                        : (data['state']['name_fr'] + ', ' + data['city']['name_fr']),
+                        : (data['state']['name_fr'] +
+                            ', ' +
+                            data['city']['name_fr']),
                     imageUrl: (data['imageUrl'] != null &&
                             (data['imageUrl'] as String).isNotEmpty)
                         ? data['imageUrl']
@@ -173,7 +175,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                             name: data['name'] ?? 'Unnamed',
                             location: isArabic
                                 ? (data['state']['name_ar'] +
-                                    ', ' +
+                                    '، ' +
                                     data['city']['name_ar'])
                                 : (data['state']['name_fr'] +
                                     ', ' +

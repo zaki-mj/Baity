@@ -407,19 +407,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                         const SizedBox(height: 24),
 
                         // Description Card
-                        SectionCard(
-                          theme,
-                          loc.description,
-                          Icons.description,
-                          [
-                            CustomTextField(
-                              controller: _descriptionController,
-                              label: loc.description,
-                              icon: Icons.text_fields,
-                              maxLines: 4,
-                            ),
-                          ],
-                        ),
 
                         const SizedBox(height: 32),
 
@@ -492,8 +479,11 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                     instagram: _instagramUrlController.text,
                                     twitter: _twitterUrlController.text,
                                     description: _descriptionController.text,
-                                    ImageUrl: _imageUrlController.text,
-                                    // Include the filtered state and city objects
+                                    ImageUrl: (_imageUrlController.text ==
+                                                '') ||
+                                            (_imageUrlController.text == null)
+                                        ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg'
+                                        : _imageUrlController.text,
                                     state: filteredState,
                                     city: selectedCity,
                                   );
