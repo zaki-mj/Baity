@@ -5,15 +5,45 @@ import 'package:baity/pages/AddEditYouthHousePage.dart';
 import 'package:baity/widgets/AppDrawer.dart';
 import 'package:baity/widgets/AdminYouthHouseCard.dart';
 
-class AdminDashboardPage extends StatelessWidget {
+class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
 
   @override
+  State<AdminDashboardPage> createState() => _AdminDashboardPageState();
+}
+
+class _AdminDashboardPageState extends State<AdminDashboardPage> {
+  int numberOfHouses = -1;
+  @override
+  void initState() {
+    super.initState();
+    fetchNumberOfHouses();
+  }
+
+  Future<void> fetchNumberOfHouses() async {
+    try {
+      final querySnapshot =
+          await FirebaseFirestore.instance.collection('places').get();
+
+      if (!mounted) return; // ✅ Prevent setState on disposed widget
+
+      setState(() {
+        numberOfHouses = querySnapshot.docs.length;
+      });
+    } catch (e) {
+      print('Error fetching number of houses: $e');
+
+      if (!mounted) return; // ✅ Also prevent here
+
+      setState(() {
+        numberOfHouses = 0;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
-    final List<Map<String, dynamic>> allHouses = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -40,60 +70,6 @@ class AdminDashboardPage extends StatelessWidget {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                theme.colorScheme.primary,
-                                theme.colorScheme.secondary,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color:
-                                    theme.colorScheme.primary.withOpacity(0.3),
-                                blurRadius: 12,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.admin_panel_settings,
-                            color: theme.colorScheme.onPrimary,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                loc.editData,
-                                style: theme.textTheme.headlineSmall?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                loc.manageYouthHouses,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.7),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
@@ -114,7 +90,7 @@ class AdminDashboardPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            '${allHouses.length} ${loc.availableSpots}',
+                            '${numberOfHouses} ${loc.availableSpots}',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w500,
@@ -134,7 +110,6 @@ class AdminDashboardPage extends StatelessWidget {
               //
               //
               Expanded(
-                // Set a fixed height or wrap in Expanded
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('places')
@@ -236,8 +211,7 @@ class AdminDashboardPage extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context, String houseName, String docId) {
-    final scaffoldMessenger =
-        ScaffoldMessenger.of(context); 
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     showDialog(
       context: context,
@@ -255,8 +229,7 @@ class AdminDashboardPage extends StatelessWidget {
             TextButton(
               child: Text(loc.delete, style: TextStyle(color: Colors.red)),
               onPressed: () async {
-                Navigator.of(dialogContext)
-                    .pop(); 
+                Navigator.of(dialogContext).pop();
 
                 try {
                   await FirebaseFirestore.instance

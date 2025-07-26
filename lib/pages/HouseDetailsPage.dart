@@ -206,23 +206,20 @@ class HouseDetailsPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            IconButton(
-                              icon: const Icon(Icons.facebook,
-                                  color: Color(0xFF4267B2)),
-                              onPressed: () => _launchURL(facebookUrl),
-                              tooltip: loc.detailsFacebook,
+                            GestureDetector(
+                              onTap: () => _launchURL(facebookUrl),
+                              child: Image.asset(
+                                'lib/assets/images/facebook.png',
+                                scale: 8,
+                              ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.camera_alt,
-                                  color: Color(0xFFC13584)),
-                              onPressed: () => _launchURL(instagramUrl),
-                              tooltip: loc.detailsInstagram,
+                            Image.asset(
+                              'lib/assets/images/instagram.png',
+                              scale: 30,
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.alternate_email,
-                                  color: Color(0xFF1DA1F2)),
-                              onPressed: () => _launchURL(twitterUrl),
-                              tooltip: loc.detailsTwitter,
+                            Image.asset(
+                              'lib/assets/images/twitter.png',
+                              scale: 70,
                             ),
                           ],
                         ),

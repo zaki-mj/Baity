@@ -139,13 +139,23 @@ class AdminYouthHouseCard extends StatelessWidget {
                                   theme.colorScheme.secondary.withOpacity(0.3),
                             ),
                           ),
-                          child: Text(
-                            '${house['availableSpots']} ${loc.availableSpots}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.secondary,
-                              fontWeight: FontWeight.w500,
+                          child: Row(children: [
+                            Text(
+                              '${house['spots']}',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.secondary,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.hotel,
+                              size: 20,
+                              color: theme.colorScheme.secondary,
+                            )
+                          ]),
                         ),
                       ],
                     ),
