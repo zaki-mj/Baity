@@ -241,6 +241,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                     // ✅ Use the stored safe context
                     SnackBar(content: Text('$houseName deleted successfully')),
                   );
+                  setState(() {
+                    numberOfHouses = numberOfHouses - 1;
+                  });
                 } catch (e) {
                   scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text('Error deleting: $e')),

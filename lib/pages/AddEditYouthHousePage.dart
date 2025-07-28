@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:baity/services/StoreServices.dart';
@@ -46,7 +45,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   final _twitterUrlController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  String _selectedType = 'youth_house';
+  String? _selectedType;
   int _availableSpots = 20;
   double _latitude = 35.0786;
   double _longitude = -2.2047;
@@ -71,7 +70,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
       _instagramUrlController.text = widget.houseData!['instagramUrl'] ?? '';
       _twitterUrlController.text = widget.houseData!['twitterUrl'] ?? '';
       _descriptionController.text = widget.houseData!['description'] ?? '';
-      _selectedType = widget.houseData!['type'] ?? 'youth_house';
+      _selectedType = widget.houseData!['type'];
       _availableSpots = widget.houseData!['availableSpots'] ?? 20;
       _latitude = widget.houseData!['latitude'] ?? 35.0786;
       _longitude = widget.houseData!['longitude'] ?? -2.2047;
@@ -174,15 +173,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            widget.isEditing
-                                ? loc.updateYouthHouseInfo
-                                : loc.createNewYouthHouse,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color:
-                                  theme.colorScheme.onSurface.withOpacity(0.7),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -220,6 +210,15 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                   return loc.pleaseEnterName;
                                 }
                                 return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            TypeSelector(
+                              selectedType: _selectedType,
+                              onTypeChanged: (value) {
+                                setState(() {
+                                  _selectedType = value;
+                                });
                               },
                             ),
                             const SizedBox(height: 16),
@@ -309,18 +308,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                             ),
                             const SizedBox(height: 16),
                             CustomTextField(
-                              controller: _imageUrlController,
-                              label: loc.imageUrl,
-                              icon: Icons.image,
-                              // validator: (value) {
-                              //   if (value == null || value.isEmpty) {
-                              //     return loc.pleaseEnterImageUrl;
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                            const SizedBox(height: 16),
-                            CustomTextField(
                               keyboardType: TextInputType.number,
                               controller: _NumberOfSpotsController,
                               label: loc.availableSpots,
@@ -333,13 +320,16 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               },
                             ),
                             const SizedBox(height: 16),
-                            TypeSelector(
-                              selectedType: _selectedType,
-                              onTypeChanged: (value) {
-                                setState(() {
-                                  _selectedType = value!;
-                                });
-                              },
+                            CustomTextField(
+                              controller: _imageUrlController,
+                              label: loc.imageUrl,
+                              icon: Icons.image,
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return loc.pleaseEnterImageUrl;
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 16),
                           ],

@@ -32,28 +32,37 @@ class HouseDetailsPage extends StatelessWidget {
     required this.longitude,
   }) : super(key: key);
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception("Could not launch $url");
+  Future<void> _launchURL(BuildContext context, String? url,
+      {String? fallbackMessage}) async {
+    if (url == null || url.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(fallbackMessage ?? 'Link not available')),
+      );
+      return;
     }
-  }
 
-  void _openMap(BuildContext context, double lat, double lng) async {
-    final url = 'https://www.google.com/maps/search/?api=1&query=$lat,$lng';
-    final uri = Uri.parse(url);
-    final canLaunch = await canLaunchUrl(uri);
-    if (canLaunch) {
-      final launched =
-          await launchUrl(uri, mode: LaunchMode.externalApplication);
+    final uri = Uri.tryParse(url);
+    if (uri == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(fallbackMessage ?? 'Invalid link')),
+      );
+      return;
+    }
+
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
       if (!launched) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open Google Maps')),
+          SnackBar(content: Text('Could not open the link')),
         );
       }
-    } else {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not open Google Maps')),
+        SnackBar(content: Text('Failed to launch: $e')),
       );
     }
   }
@@ -156,7 +165,7 @@ class HouseDetailsPage extends StatelessWidget {
                             Icon(Icons.phone, color: theme.colorScheme.primary),
                             const SizedBox(width: 6),
                             GestureDetector(
-                              onTap: () => _launchURL('tel:$phone'),
+                              onTap: () => _launchURL(context, 'tel:$phone'),
                               child: Text(phone,
                                   style: theme.textTheme.bodyLarge?.copyWith(
                                     color: theme.colorScheme.primary,
@@ -171,7 +180,7 @@ class HouseDetailsPage extends StatelessWidget {
                             Icon(Icons.email, color: theme.colorScheme.primary),
                             const SizedBox(width: 6),
                             GestureDetector(
-                              onTap: () => _launchURL('mailto:$email'),
+                              onTap: () => _launchURL(context, 'mailto:$email'),
                               child: Text(email,
                                   style: theme.textTheme.bodyLarge?.copyWith(
                                     color: theme.colorScheme.primary,
@@ -203,23 +212,39 @@ class HouseDetailsPage extends StatelessWidget {
                             color: theme.colorScheme.primary,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: () => _launchURL(facebookUrl),
+                              onTap: () {
+                                _launchURL(context, facebookUrl,
+                                    fallbackMessage: 'no link');
+                              },
                               child: Image.asset(
                                 'lib/assets/images/facebook.png',
-                                scale: 8,
+                                scale: 20,
                               ),
                             ),
-                            Image.asset(
-                              'lib/assets/images/instagram.png',
-                              scale: 30,
+                            GestureDetector(
+                              onTap: () {
+                                _launchURL(context, instagramUrl,
+                                    fallbackMessage: 'no link');
+                              },
+                              child: Image.asset(
+                                'lib/assets/images/instagram.png',
+                                scale: 20,
+                              ),
                             ),
-                            Image.asset(
-                              'lib/assets/images/twitter.png',
-                              scale: 70,
+                            GestureDetector(
+                              onTap: () {
+                                _launchURL(context, twitterUrl,
+                                    fallbackMessage: 'no link');
+                              },
+                              child: Image.asset(
+                                'lib/assets/images/twitter.png',
+                                scale: 20,
+                              ),
                             ),
                           ],
                         ),
@@ -247,14 +272,6 @@ class HouseDetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(Icons.map, color: theme.colorScheme.primary),
-                            const SizedBox(width: 6),
-                            Expanded(child: Text(address)),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
                         Center(
                           child: ElevatedButton.icon(
                             icon: Icon(
@@ -275,8 +292,7 @@ class HouseDetailsPage extends StatelessWidget {
                               ),
                               elevation: 4,
                             ),
-                            onPressed: () => _launchURL(
-                                'https://www.google.com/maps/place/L\'OBERJ+Chahid+Zerguit+Ahmed/@35.0786183,-2.2047894,109m/data=!3m1!1e3!4m6!3m5!1s0xd78370072642247:0x9d47fb268e4dd34c!8m2!3d35.0788221!4d-2.204745!16s%2Fg%2F11ycykq89_?entry=ttu&g_ep=EgoyMDI1MDcwNy4wIKXMDSoASAFQAw%3D%3D'),
+                            onPressed: () => _launchURL(context, address),
                           ),
                         ),
                       ],
