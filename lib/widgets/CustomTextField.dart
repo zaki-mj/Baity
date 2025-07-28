@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
-  final IconData icon;
+  final IconData? icon;
   final TextInputType? keyboardType;
   final int maxLines;
   final String? Function(String?)? validator;
@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.label,
-    required this.icon,
+    this.icon,
     this.keyboardType,
     this.maxLines = 1,
     this.validator,

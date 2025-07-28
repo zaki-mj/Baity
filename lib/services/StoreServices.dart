@@ -5,24 +5,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class StoreServices {
   Future<void> createPlace({
-    required String name,
+    required String nameAR,
+    required String nameFR,
     String? location,
-    String? type,
     int? numberOfSpots,
     String? phone,
     String? email,
     String? facebook,
     String? instagram,
     String? twitter,
-    String? description,
     String? ImageUrl,
     Map<String, dynamic>? state, // Add state object
-    Map<String, dynamic>? city, // Add city object
+    Map<String, dynamic>? city,
+    Map<String, dynamic>? type, // Add city object
   }) async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     await FirebaseFirestore.instance.collection('places').add({
-      'name': name,
+      'nameAR': nameAR,
+      'nameFR': nameFR,
       'location': location,
       'imageUrl': ImageUrl,
       'type': type,
@@ -32,9 +33,8 @@ class StoreServices {
       'facebook': facebook,
       'instagram': instagram,
       'twitter': twitter,
-      'description': description,
-      'state': state, // Store the state object
-      'city': city, // Store the city object
+      'state': state,
+      'city': city,
       'createdBy': uid,
       'createdAt': FieldValue.serverTimestamp(),
     });

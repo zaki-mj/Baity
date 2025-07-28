@@ -13,11 +13,13 @@ StoreServices _storeservices = StoreServices();
 class AddEditYouthHousePage extends StatefulWidget {
   final bool isEditing;
   final Map<String, dynamic>? houseData;
+  final Map<String, dynamic>? houseType;
 
   const AddEditYouthHousePage({
     Key? key,
     required this.isEditing,
     this.houseData,
+    this.houseType,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,8 @@ Future<List<Map<String, dynamic>>> loadWilayas() async {
 
 class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _nameControllerAR = TextEditingController();
+  final _nameControllerFR = TextEditingController();
   final _locationController = TextEditingController();
   final _imageUrlController = TextEditingController();
   final _NumberOfSpotsController = TextEditingController();
@@ -60,7 +63,9 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   void initState() {
     super.initState();
     if (widget.isEditing && widget.houseData != null) {
-      _nameController.text = widget.houseData!['name'] ?? '';
+      _nameControllerAR.text = widget.houseData!['nameAR'] ?? '';
+
+      _nameControllerFR.text = widget.houseData!['nameFR'] ?? '';
       _locationController.text = widget.houseData!['location'] ?? '';
       _imageUrlController.text = widget.houseData!['imageUrl'] ?? '';
       _phoneController.text = widget.houseData!['phone'] ?? '';
@@ -89,7 +94,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _nameControllerAR.dispose();
+    _nameControllerFR.dispose();
     _locationController.dispose();
     _imageUrlController.dispose();
     _phoneController.dispose();
@@ -202,9 +208,21 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                           Icons.info_outline,
                           [
                             CustomTextField(
-                              controller: _nameController,
+                              controller: _nameControllerAR,
                               label: loc.name,
-                              icon: Icons.home,
+                              icon: Icons.dry_cleaning,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return loc.pleaseEnterName;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            CustomTextField(
+                              controller: _nameControllerFR,
+                              label: loc.name,
+                              icon: Icons.abc,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return loc.pleaseEnterName;
@@ -324,12 +342,12 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               controller: _imageUrlController,
                               label: loc.imageUrl,
                               icon: Icons.image,
-                              // validator: (value) {
-                              //   if (value == null || value.isEmpty) {
-                              //     return loc.pleaseEnterImageUrl;
-                              //   }
-                              //   return null;
-                              // },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return loc.pleaseEnterImageUrl;
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 16),
                           ],
@@ -453,14 +471,24 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                       Map<String, dynamic>.from(selectedState)
                                         ..remove('cities');
 
-                                  // Call the createPlace method with the filtered state and city objects
                                   await _storeservices.createPlace(
-                                    name: _nameController.text,
+                                    nameAR: _nameControllerAR.text,
+                                    nameFR: _nameControllerFR.text,
                                     location: selectedStateCode != null &&
                                             selectedCityName != null
                                         ? '${filteredState['name']} - ${selectedCity['name']}'
                                         : '',
-                                    type: _selectedType,
+                                    type: {
+                                      'ar': _selectedType == 'youth_house'
+                                          ? 'دار الشباب'
+                                          : 'مخيم الشباب',
+                                      'fr': _selectedType == 'youth_house'
+                                          ? 'Auberge des jeunes'
+                                          : 'Camp des jeunes',
+                                      'en': _selectedType == 'youth_house'
+                                          ? 'Youth house'
+                                          : 'Youth camp',
+                                    },
                                     numberOfSpots: int.tryParse(
                                         _NumberOfSpotsController.text),
                                     phone: _phoneController.text,
@@ -468,10 +496,10 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                     facebook: _facebookUrlController.text,
                                     instagram: _instagramUrlController.text,
                                     twitter: _twitterUrlController.text,
-                                    description: _descriptionController.text,
-                                    ImageUrl: (_imageUrlController.text ==
-                                                '') ||
-                                            (_imageUrlController.text == null)
+                                    ImageUrl: (_imageUrlController.text == '') ||
+                                            (_imageUrlController.text ==
+                                                null) ||
+                                            (_imageUrlController.text == ' ')
                                         ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg'
                                         : _imageUrlController.text,
                                     state: filteredState,
