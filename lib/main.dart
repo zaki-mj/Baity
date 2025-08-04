@@ -6,7 +6,8 @@ import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+ //test
+ 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
