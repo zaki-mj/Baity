@@ -137,7 +137,20 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Center(child: Text('Error loading data'));
+                debugPrint('Firestore error: ${snapshot.error}');
+                debugPrint('Stack trace: ${snapshot.stackTrace}');
+
+                // Show the error message in the UI
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Error loading data:\n${snapshot.error}',
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -211,8 +224,196 @@ class _DiscoveryPageState extends State<DiscoveryPage>
               );
             },
           ),
-          Text('datad'),
-          Text('dataf'),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('places')
+                .where('type', isEqualTo: "youth_house")
+                .orderBy('createdAt', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                debugPrint('Firestore error: ${snapshot.error}');
+                debugPrint('Stack trace: ${snapshot.stackTrace}');
+
+                // Show the error message in the UI
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Error loading data:\n${snapshot.error}',
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final docs = snapshot.data!.docs;
+
+              if (docs.isEmpty) {
+                return Center(child: Text('No places found'));
+              }
+              return ListView.builder(
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data = docs[index].data() as Map<String, dynamic>;
+
+                  return YouthHouseCard(
+                    name: data['name'] ?? 'Unnamed',
+                    location: isArabic
+                        ? (data['state']['name_ar'] +
+                            '، ' +
+                            data['city']['name_ar'])
+                        : (data['state']['name_fr'] +
+                            ', ' +
+                            data['city']['name_fr']),
+                    imageUrl: (data['imageUrl'] != null &&
+                            (data['imageUrl'] as String).isNotEmpty)
+                        ? data['imageUrl']
+                        : 'https://i.ibb.co/4wP1LMmL/20530961.jpg',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HouseDetailsPage(
+                            name: data['name'] ?? 'Unnamed',
+                            location: isArabic
+                                ? (data['state']['name_ar'] +
+                                    '، ' +
+                                    data['city']['name_ar'])
+                                : (data['state']['name_fr'] +
+                                    ', ' +
+                                    data['city']['name_fr']),
+                            imageUrl: data['imageUrl'],
+                            // imageUrl: (data['imageUrl'] != null &&
+                            //         (data['imageUrl'] as String).isNotEmpty)
+                            //     ? data['imageUrl']
+                            //     : 'https://ibb.co/dsGmv6Wv',
+                            availableSpots: data['spots'] ?? 0,
+                            phone: data['phone'] ?? '',
+                            email: data['email'] ?? '',
+                            facebookUrl: data['facebookUrl'] ?? '',
+                            instagramUrl: data['instagramUrl'] ?? '',
+                            twitterUrl: data['twitterUrl'] ?? '',
+                            address: data['address'] ?? '',
+                            latitude: (data['latitude'] is double)
+                                ? data['latitude']
+                                : (data['latitude'] is int)
+                                    ? (data['latitude'] as int).toDouble()
+                                    : 0.0,
+                            longitude: (data['longitude'] is double)
+                                ? data['longitude']
+                                : (data['longitude'] is int)
+                                    ? (data['longitude'] as int).toDouble()
+                                    : 0.0,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('places')
+                .where('type', isEqualTo: "youth_camp")
+                .orderBy('createdAt', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                debugPrint('Firestore error: ${snapshot.error}');
+                debugPrint('Stack trace: ${snapshot.stackTrace}');
+
+                // Show the error message in the UI
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Error loading data:\n${snapshot.error}',
+                      style: TextStyle(color: Colors.red, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final docs = snapshot.data!.docs;
+
+              if (docs.isEmpty) {
+                return Center(child: Text('No places found'));
+              }
+              return ListView.builder(
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  final data = docs[index].data() as Map<String, dynamic>;
+
+                  return YouthHouseCard(
+                    name: data['name'] ?? 'Unnamed',
+                    location: isArabic
+                        ? (data['state']['name_ar'] +
+                            '، ' +
+                            data['city']['name_ar'])
+                        : (data['state']['name_fr'] +
+                            ', ' +
+                            data['city']['name_fr']),
+                    imageUrl: (data['imageUrl'] != null &&
+                            (data['imageUrl'] as String).isNotEmpty)
+                        ? data['imageUrl']
+                        : 'https://i.ibb.co/4wP1LMmL/20530961.jpg',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HouseDetailsPage(
+                            name: data['name'] ?? 'Unnamed',
+                            location: isArabic
+                                ? (data['state']['name_ar'] +
+                                    '، ' +
+                                    data['city']['name_ar'])
+                                : (data['state']['name_fr'] +
+                                    ', ' +
+                                    data['city']['name_fr']),
+                            imageUrl: data['imageUrl'],
+                            // imageUrl: (data['imageUrl'] != null &&
+                            //         (data['imageUrl'] as String).isNotEmpty)
+                            //     ? data['imageUrl']
+                            //     : 'https://ibb.co/dsGmv6Wv',
+                            availableSpots: data['spots'] ?? 0,
+                            phone: data['phone'] ?? '',
+                            email: data['email'] ?? '',
+                            facebookUrl: data['facebookUrl'] ?? '',
+                            instagramUrl: data['instagramUrl'] ?? '',
+                            twitterUrl: data['twitterUrl'] ?? '',
+                            address: data['address'] ?? '',
+                            latitude: (data['latitude'] is double)
+                                ? data['latitude']
+                                : (data['latitude'] is int)
+                                    ? (data['latitude'] as int).toDouble()
+                                    : 0.0,
+                            longitude: (data['longitude'] is double)
+                                ? data['longitude']
+                                : (data['longitude'] is int)
+                                    ? (data['longitude'] as int).toDouble()
+                                    : 0.0,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );
