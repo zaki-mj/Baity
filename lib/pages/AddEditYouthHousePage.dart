@@ -209,8 +209,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                           [
                             CustomTextField(
                               controller: _nameControllerAR,
-                              label: loc.name,
-                              icon: Icons.dry_cleaning,
+                              label: loc.nameArabic,
+                              icon: Icons.language,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return loc.pleaseEnterName;
@@ -221,7 +221,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                             const SizedBox(height: 16),
                             CustomTextField(
                               controller: _nameControllerFR,
-                              label: loc.name,
+                              label: loc.nameLatin,
                               icon: Icons.abc,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
