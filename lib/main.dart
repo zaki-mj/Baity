@@ -1,4 +1,5 @@
 import 'package:baity/pages/welcome.dart';
+import 'package:baity/widgets/setupdecider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -47,7 +48,7 @@ class BaityApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const WelcomePage(),
+      home: const StartupDecider(),
     );
   }
 }
