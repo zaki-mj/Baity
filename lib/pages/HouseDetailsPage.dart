@@ -71,6 +71,7 @@ class HouseDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(name),

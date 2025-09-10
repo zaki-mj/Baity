@@ -75,7 +75,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
       _instagramUrlController.text = widget.houseData!['instagramUrl'] ?? '';
       _twitterUrlController.text = widget.houseData!['twitterUrl'] ?? '';
       _descriptionController.text = widget.houseData!['description'] ?? '';
-      _selectedType = widget.houseData!['type'];
+      _selectedType = widget.houseData!['type.en'];
       _availableSpots = widget.houseData!['availableSpots'] ?? 20;
       _latitude = widget.houseData!['latitude'] ?? 35.0786;
       _longitude = widget.houseData!['longitude'] ?? -2.2047;

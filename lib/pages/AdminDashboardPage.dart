@@ -14,6 +14,7 @@ class AdminDashboardPage extends StatefulWidget {
 
 class _AdminDashboardPageState extends State<AdminDashboardPage> {
   int numberOfHouses = -1;
+
   @override
   void initState() {
     super.initState();
@@ -25,7 +26,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       final querySnapshot =
           await FirebaseFirestore.instance.collection('places').get();
 
-      if (!mounted) return; // ✅ Prevent setState on disposed widget
+      if (!mounted) return;
 
       setState(() {
         numberOfHouses = querySnapshot.docs.length;
@@ -33,7 +34,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     } catch (e) {
       print('Error fetching number of houses: $e');
 
-      if (!mounted) return; // ✅ Also prevent here
+      if (!mounted) return;
 
       setState(() {
         numberOfHouses = 0;
@@ -41,6 +42,16 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     }
   }
 
+  /// Helper function to check if URL is valid
+  bool isValidUrl(String? url) {
+    if (url == null) return false;
+    final uri = Uri.tryParse(url);
+    return uri != null &&
+        uri.hasAbsolutePath &&
+        (uri.isScheme('http') || uri.isScheme('https'));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
@@ -90,7 +101,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            '${numberOfHouses} ${loc.availableSpots}',
+                            '$numberOfHouses ${loc.availableSpots}',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.w500,
@@ -104,11 +115,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               ),
 
               // Content Section
-              //
-              //
-              //
-              //
-              //
               Expanded(
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
@@ -136,21 +142,31 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                         final doc = docs[index];
                         final house = doc.data() as Map<String, dynamic>;
 
+                        // Validate the image URL
+                        String imageUrl = isValidUrl(house['imageUrl'])
+                            ? house['imageUrl']
+                            : 'https://i.ibb.co/sJvdxyHr/952285.webp';
+
                         return AdminYouthHouseCard(
                           house: house,
+                          imageUrl: imageUrl,
                           onEdit: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AddEditYouthHousePage(
                                   isEditing: true,
-                                  houseData: house,
+                                  houseData: {
+                                    'id': doc
+                                        .id, // 👈 attach Firestore document id
+                                    ...house,
+                                  },
                                 ),
                               ),
                             );
                           },
                           onDelete: () {
-                            _showDeleteDialog(context, house['name'], doc.id);
+                            _showDeleteDialog(context, house['nameAR'], doc.id);
                           },
                         );
                       },
@@ -227,7 +243,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               onPressed: () => Navigator.of(dialogContext).pop(),
             ),
             TextButton(
-              child: Text(loc.delete, style: TextStyle(color: Colors.red)),
+              child:
+                  Text(loc.delete, style: const TextStyle(color: Colors.red)),
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
 
@@ -238,9 +255,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                       .delete();
 
                   scaffoldMessenger.showSnackBar(
-                    // ✅ Use the stored safe context
                     SnackBar(content: Text('$houseName deleted successfully')),
                   );
+
                   setState(() {
                     numberOfHouses = numberOfHouses - 1;
                   });

@@ -1,3 +1,4 @@
+import 'package:baity/pages/DiscoveryPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -90,6 +91,25 @@ class AppDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AboutPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.dashboard,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            title: Text(
+              loc.explore,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close drawer
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DiscoveryPage(),
                 ),
               );
             },

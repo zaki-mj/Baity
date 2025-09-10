@@ -95,5 +95,7 @@
   "errorWrongCredentials": "Email ou mot de passe incorrect.",
   "errorUnknown": "Une erreur inconnue s'est produite. Veuillez réessayer.",
   "state": "Wilaya",
-  "city": "Commune"
+  "city": "Commune",
+  "adminInterface": "Interface Des Administrateurs",
+  "explore":"Explorer"
 } 

@@ -94,5 +94,7 @@
   "errorWrongCredentials": "Incorrect email or password.",
   "errorUnknown": "An unknown error occurred. Please try again.",
   "state": "State",
-  "city": "City"
+  "city": "City",
+  "adminInterface": "Administrators Interface",
+  "explore": "Explore"
 }

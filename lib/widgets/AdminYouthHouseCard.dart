@@ -5,12 +5,14 @@ class AdminYouthHouseCard extends StatelessWidget {
   final Map<String, dynamic> house;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final String? imageUrl; // optional validated URL from parent
 
   const AdminYouthHouseCard({
     super.key,
     required this.house,
     required this.onEdit,
     required this.onDelete,
+    this.imageUrl,
   });
 
   @override
@@ -18,9 +20,11 @@ class AdminYouthHouseCard extends StatelessWidget {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!;
 
-    final String imageUrl = house['imageUrl']?.isNotEmpty == true
-        ? house['imageUrl']
-        : 'https://i.ibb.co/4wP1LMmL/20530961.jpg';
+    // Use the validated imageUrl if passed, else fallback to house['imageUrl'], then generic
+    final String displayImageUrl = imageUrl ??
+        (house['imageUrl']?.isNotEmpty == true
+            ? house['imageUrl']
+            : 'https://i.ibb.co/4wP1LMmL/20530961.jpg');
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -52,7 +56,7 @@ class AdminYouthHouseCard extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.network(
-                      imageUrl,
+                      displayImageUrl,
                       height: 160,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -97,7 +101,7 @@ class AdminYouthHouseCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                house['name'],
+                                house['nameAR'],
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -147,14 +151,12 @@ class AdminYouthHouseCard extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            const SizedBox(width: 5),
                             Icon(
                               Icons.hotel,
                               size: 20,
                               color: theme.colorScheme.secondary,
-                            )
+                            ),
                           ]),
                         ),
                       ],
