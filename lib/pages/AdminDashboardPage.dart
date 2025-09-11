@@ -158,7 +158,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                                   isEditing: true,
                                   houseData: {
                                     'id': doc
-                                        .id, // 👈 attach Firestore document id
+                                        .id, // attach Firestore document id
                                     ...house,
                                   },
                                 ),

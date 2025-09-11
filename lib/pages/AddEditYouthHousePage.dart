@@ -49,9 +49,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   final _descriptionController = TextEditingController();
 
   String? _selectedType;
-  int _availableSpots = 20;
-  double _latitude = 35.0786;
-  double _longitude = -2.2047;
   bool _isLoading = false;
 
   String? selectedStateCode;
@@ -62,23 +59,51 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   @override
   void initState() {
     super.initState();
+
     if (widget.isEditing && widget.houseData != null) {
       _nameControllerAR.text = widget.houseData!['nameAR'] ?? '';
-
       _nameControllerFR.text = widget.houseData!['nameFR'] ?? '';
       _locationController.text = widget.houseData!['location'] ?? '';
       _imageUrlController.text = widget.houseData!['imageUrl'] ?? '';
       _phoneController.text = widget.houseData!['phone'] ?? '';
       _emailController.text = widget.houseData!['email'] ?? '';
       _addressController.text = widget.houseData!['address'] ?? '';
-      _facebookUrlController.text = widget.houseData!['facebookUrl'] ?? '';
-      _instagramUrlController.text = widget.houseData!['instagramUrl'] ?? '';
-      _twitterUrlController.text = widget.houseData!['twitterUrl'] ?? '';
-      _descriptionController.text = widget.houseData!['description'] ?? '';
-      _selectedType = widget.houseData!['type.en'];
-      _availableSpots = widget.houseData!['availableSpots'] ?? 20;
-      _latitude = widget.houseData!['latitude'] ?? 35.0786;
-      _longitude = widget.houseData!['longitude'] ?? -2.2047;
+      _facebookUrlController.text = widget.houseData!['facebook'] ?? '';
+      _instagramUrlController.text = widget.houseData!['instagram'] ?? '';
+      _twitterUrlController.text = widget.houseData!['twitter'] ?? '';
+      final typeEn = widget.houseData!['type']?['en'];
+      if (typeEn == 'Youth house') {
+        _selectedType = 'youth_house';
+      } else if (typeEn == 'Youth camp') {
+        _selectedType = 'youth_camp';
+      }
+
+      _NumberOfSpotsController.text =
+          (widget.houseData!['spots'] ?? 20).toString();
+
+      // Just store state & city raw data for now
+      selectedStateCode = widget.houseData!['state']?['code'];
+      selectedCityName = widget.houseData!['city']?['name'];
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final locale = Localizations.localeOf(context);
+
+    // Only load states & cities once
+    if (states.isEmpty) {
+      _loadStates(locale).then((_) {
+        if (selectedStateCode != null) {
+          _loadCities(selectedStateCode!, locale).then((_) {
+            setState(() {
+              // make sure the city is restored
+            });
+          });
+        }
+      });
     }
   }
 
@@ -443,81 +468,84 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                           ),
                           child: ElevatedButton(
                             //onPressed: _isLoading ? null : _handleSave,
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                setState(() {
-                                  _isLoading = true;
-                                });
+                                setState(() => _isLoading = true);
 
-                                // Simulate save delay
-                                Future.delayed(const Duration(seconds: 1),
-                                    () async {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
+                                final selectedState = states.firstWhere(
+                                  (state) => state['code'] == selectedStateCode,
+                                  orElse: () => {},
+                                );
+                                final selectedCity = cities.firstWhere(
+                                  (city) => city['name'] == selectedCityName,
+                                  orElse: () => {},
+                                );
 
-                                  final loc = AppLocalizations.of(context)!;
+                                final filteredState =
+                                    Map<String, dynamic>.from(selectedState)
+                                      ..remove('cities');
 
-                                  // Find the selected state and city objects
-                                  final selectedState = states.firstWhere(
-                                      (state) =>
-                                          state['code'] == selectedStateCode);
-                                  final selectedCity = cities.firstWhere(
-                                      (city) =>
-                                          city['name'] == selectedCityName);
+                                final placeData = {
+                                  'nameAR': _nameControllerAR.text,
+                                  'nameFR': _nameControllerFR.text,
+                                  'location': selectedStateCode != null &&
+                                          selectedCityName != null
+                                      ? '${filteredState['name']} - ${selectedCity['name']}'
+                                      : '',
+                                  'type': {
+                                    'ar': _selectedType == 'youth_house'
+                                        ? 'دار الشباب'
+                                        : 'مخيم الشباب',
+                                    'fr': _selectedType == 'youth_house'
+                                        ? 'Auberge des jeunes'
+                                        : 'Camp des jeunes',
+                                    'en': _selectedType == 'youth_house'
+                                        ? 'Youth house'
+                                        : 'Youth camp',
+                                  },
+                                  'spots': int.tryParse(
+                                      _NumberOfSpotsController.text),
+                                  'phone': _phoneController.text,
+                                  'email': _emailController.text,
+                                  'facebook': _facebookUrlController.text,
+                                  'instagram': _instagramUrlController.text,
+                                  'twitter': _twitterUrlController.text,
+                                  'imageUrl': _imageUrlController.text
+                                          .trim()
+                                          .isEmpty
+                                      ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg'
+                                      : _imageUrlController.text,
+                                  'state': filteredState.isEmpty
+                                      ? null
+                                      : filteredState,
+                                  'city': selectedCity.isEmpty
+                                      ? null
+                                      : selectedCity,
+                                };
 
-                                  // Remove the 'cities' field from the state object
-                                  final filteredState =
-                                      Map<String, dynamic>.from(selectedState)
-                                        ..remove('cities');
+                                await _storeservices.savePlace(
+                                  docId: widget.isEditing
+                                      ? (widget.houseData != null
+                                          ? widget.houseData!['id']
+                                          : null)
+                                      : null,
+                                  data: placeData,
+                                );
 
-                                  await _storeservices.createPlace(
-                                    nameAR: _nameControllerAR.text,
-                                    nameFR: _nameControllerFR.text,
-                                    location: selectedStateCode != null &&
-                                            selectedCityName != null
-                                        ? '${filteredState['name']} - ${selectedCity['name']}'
-                                        : '',
-                                    type: {
-                                      'ar': _selectedType == 'youth_house'
-                                          ? 'دار الشباب'
-                                          : 'مخيم الشباب',
-                                      'fr': _selectedType == 'youth_house'
-                                          ? 'Auberge des jeunes'
-                                          : 'Camp des jeunes',
-                                      'en': _selectedType == 'youth_house'
-                                          ? 'Youth house'
-                                          : 'Youth camp',
-                                    },
-                                    numberOfSpots: int.tryParse(
-                                        _NumberOfSpotsController.text),
-                                    phone: _phoneController.text,
-                                    email: _emailController.text,
-                                    facebook: _facebookUrlController.text,
-                                    instagram: _instagramUrlController.text,
-                                    twitter: _twitterUrlController.text,
-                                    ImageUrl: (_imageUrlController.text == '') ||
-                                            (_imageUrlController.text ==
-                                                null) ||
-                                            (_imageUrlController.text == ' ')
-                                        ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg'
-                                        : _imageUrlController.text,
-                                    state: filteredState,
-                                    city: selectedCity,
-                                  );
+                                setState(() => _isLoading = false);
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(widget.isEditing
-                                          ? loc.youthHouseUpdated
-                                          : loc.youthHouseAdded),
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  );
+                                final loc = AppLocalizations.of(context)!;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(widget.isEditing
+                                        ? loc.youthHouseUpdated
+                                        : loc.youthHouseAdded),
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                );
 
-                                  Navigator.pop(context);
-                                });
+                                Navigator.pop(context);
                               }
                             },
                             style: ElevatedButton.styleFrom(

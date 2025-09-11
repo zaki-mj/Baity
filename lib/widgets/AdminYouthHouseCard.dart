@@ -19,6 +19,7 @@ class AdminYouthHouseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     // Use the validated imageUrl if passed, else fallback to house['imageUrl'], then generic
     final String displayImageUrl = imageUrl ??
@@ -101,7 +102,7 @@ class AdminYouthHouseCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                house['nameAR'],
+                                isArabic ? house['nameAR'] : house['nameFR'],
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -117,7 +118,13 @@ class AdminYouthHouseCard extends StatelessWidget {
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
-                                      house['location'],
+                                      isArabic
+                                          ? (house['state']['name_ar'] +
+                                              '، ' +
+                                              house['city']['name_ar'])
+                                          : (house['state']['name_fr'] +
+                                              ', ' +
+                                              house['city']['name_fr']),
                                       style:
                                           theme.textTheme.bodyMedium?.copyWith(
                                         color: theme.colorScheme.onSurface

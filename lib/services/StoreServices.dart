@@ -47,15 +47,40 @@ class StoreServices {
         .snapshots();
   }
 
-Future<void> updatePlace(String docId, Map<String, dynamic> data) async {
-  try {
-    await FirebaseFirestore.instance
-        .collection('places')
-        .doc(docId)
-        .update(data);
-  } catch (e) {
-    print("Error updating place: $e");
-    rethrow;
+  Future<void> updatePlace(String docId, Map<String, dynamic> data) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('places')
+          .doc(docId)
+          .update(data);
+    } catch (e) {
+      print("Error updating place: $e");
+      rethrow;
+    }
   }
-}
+
+  /// save function
+  Future<void> savePlace({
+    String? docId, // if null -> create, else update
+    required Map<String, dynamic> data,
+  }) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    if (docId == null) {
+      //  Create new
+      await FirebaseFirestore.instance.collection('places').add({
+        ...data,
+        'createdBy': uid,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    } else {
+      //  Update existing
+      await FirebaseFirestore.instance.collection('places').doc(docId).update({
+        ...data,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
+  }
+
+
 }
