@@ -15,6 +15,7 @@ class StoreServices {
     String? instagram,
     String? twitter,
     String? ImageUrl,
+    String? address,
     Map<String, dynamic>? state, // Add state object
     Map<String, dynamic>? city,
     Map<String, dynamic>? type, // Add city object
@@ -37,6 +38,7 @@ class StoreServices {
       'city': city,
       'createdBy': uid,
       'createdAt': FieldValue.serverTimestamp(),
+      'address': address,
     });
   }
 

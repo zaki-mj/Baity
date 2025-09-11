@@ -71,13 +71,13 @@ class AdminYouthHouseCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: house['type'] == 'youth_house'
+                          color: house['type']['en'] == 'Youth house'
                               ? Colors.blue.withOpacity(0.9)
                               : Colors.green.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          house['type'] == 'youth_house'
+                          house['type']['en'] == 'Youth house'
                               ? loc.tabYouthHouses
                               : loc.tabYouthCamps,
                           style: theme.textTheme.bodySmall?.copyWith(

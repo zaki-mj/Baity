@@ -148,6 +148,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             : 'https://i.ibb.co/sJvdxyHr/952285.webp';
 
                         return AdminYouthHouseCard(
+                          
                           house: house,
                           imageUrl: imageUrl,
                           onEdit: () {

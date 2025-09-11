@@ -46,7 +46,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
   final _facebookUrlController = TextEditingController();
   final _instagramUrlController = TextEditingController();
   final _twitterUrlController = TextEditingController();
-  final _descriptionController = TextEditingController();
 
   String? _selectedType;
   bool _isLoading = false;
@@ -83,7 +82,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
 
       // Just store state & city raw data for now
       selectedStateCode = widget.houseData!['state']?['code'];
-      selectedCityName = widget.houseData!['city']?['name'];
     }
   }
 
@@ -92,15 +90,21 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
     super.didChangeDependencies();
 
     final locale = Localizations.localeOf(context);
+    final isArabic = locale.languageCode == 'ar';
+
+    if (widget.isEditing &&
+        widget.houseData != null &&
+        selectedCityName == null) {
+      selectedCityName =
+          widget.houseData!['city']?[isArabic ? 'name_ar' : 'name_fr'];
+    }
 
     // Only load states & cities once
     if (states.isEmpty) {
       _loadStates(locale).then((_) {
         if (selectedStateCode != null) {
           _loadCities(selectedStateCode!, locale).then((_) {
-            setState(() {
-              // make sure the city is restored
-            });
+            setState(() {});
           });
         }
       });
@@ -129,7 +133,6 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
     _facebookUrlController.dispose();
     _instagramUrlController.dispose();
     _twitterUrlController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -142,6 +145,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
     if (states.isEmpty) {
       _loadStates(locale);
     }
+
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     return Scaffold(
       body: Container(
@@ -336,9 +341,12 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 fillColor: theme.colorScheme.surface,
                               ),
                               items: cities.map((city) {
+                                final cityName = isArabic
+                                    ? city['name_ar']
+                                    : city['name_fr'];
                                 return DropdownMenuItem<String>(
-                                  value: city['name'],
-                                  child: Text(city['name']),
+                                  value: cityName,
+                                  child: Text(cityName),
                                 );
                               }).toList(),
                               onChanged: selectedStateCode == null
@@ -494,7 +502,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                       : '',
                                   'type': {
                                     'ar': _selectedType == 'youth_house'
-                                        ? 'دار الشباب'
+                                        ? 'بيت الشباب'
                                         : 'مخيم الشباب',
                                     'fr': _selectedType == 'youth_house'
                                         ? 'Auberge des jeunes'
@@ -521,6 +529,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                   'city': selectedCity.isEmpty
                                       ? null
                                       : selectedCity,
+                                  'address': _addressController.text,
                                 };
 
                                 await _storeservices.savePlace(

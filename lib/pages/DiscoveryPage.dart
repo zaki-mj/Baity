@@ -47,6 +47,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
 
     final loc = AppLocalizations.of(context)!;
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isEnglish = Localizations.localeOf(context).languageCode == 'en';
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
@@ -212,7 +213,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                       : 'https://i.ibb.co/sJvdxyHr/952285.webp';
 
                   return YouthHouseCard(
-                    name: isArabic ? data['nameAR'] : data['nameFR'],
+                    name: isArabic
+                        ? (data['type']['ar'] + ' ' + data['nameAR'])
+                        : (isEnglish
+                            ? (data['type']['en'] + ' ' + data['nameFR'])
+                            : data['type']['fr'] + ' ' + data['nameFR']),
                     location: isArabic
                         ? (data['state']['name_ar'] +
                             '، ' +
@@ -226,7 +231,9 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                         context,
                         MaterialPageRoute(
                           builder: (context) => HouseDetailsPage(
-                            name: data['name'] ?? 'Unnamed',
+                            name: isArabic
+                                ? (data['type']['ar'] + ' ' + data['nameAR'])
+                                : data['nameFR'],
                             location: isArabic
                                 ? (data['state']['name_ar'] +
                                     '، ' +
@@ -238,20 +245,10 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                             availableSpots: data['spots'] ?? 0,
                             phone: data['phone'] ?? '',
                             email: data['email'] ?? '',
-                            facebookUrl: data['facebookUrl'] ?? '',
-                            instagramUrl: data['instagramUrl'] ?? '',
-                            twitterUrl: data['twitterUrl'] ?? '',
+                            facebookUrl: data['facebook'] ?? '',
+                            instagramUrl: data['instagram'] ?? '',
+                            twitterUrl: data['twitter'] ?? '',
                             address: data['address'] ?? '',
-                            latitude: (data['latitude'] is double)
-                                ? data['latitude']
-                                : (data['latitude'] is int)
-                                    ? (data['latitude'] as int).toDouble()
-                                    : 0.0,
-                            longitude: (data['longitude'] is double)
-                                ? data['longitude']
-                                : (data['longitude'] is int)
-                                    ? (data['longitude'] as int).toDouble()
-                                    : 0.0,
                           ),
                         ),
                       );
@@ -304,7 +301,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                       : 'https://i.ibb.co/sJvdxyHr/952285.webp';
 
                   return YouthHouseCard(
-                    name: isArabic ? data['nameAR'] : data['nameFR'],
+                    name: isArabic
+                        ? (data['type']['ar'] + ' ' + data['nameAR'])
+                        : (isEnglish
+                            ? (data['type']['en'] + ' ' + data['nameFR'])
+                            : data['type']['fr'] + ' ' + data['nameFR']),
                     location: isArabic
                         ? (data['state']['name_ar'] +
                             '، ' +
@@ -333,17 +334,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                             facebookUrl: data['facebookUrl'] ?? '',
                             instagramUrl: data['instagramUrl'] ?? '',
                             twitterUrl: data['twitterUrl'] ?? '',
-                            address: data['address'] ?? '',
-                            latitude: (data['latitude'] is double)
-                                ? data['latitude']
-                                : (data['latitude'] is int)
-                                    ? (data['latitude'] as int).toDouble()
-                                    : 0.0,
-                            longitude: (data['longitude'] is double)
-                                ? data['longitude']
-                                : (data['longitude'] is int)
-                                    ? (data['longitude'] as int).toDouble()
-                                    : 0.0,
+                            address: '',
                           ),
                         ),
                       );
@@ -395,7 +386,11 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                       : 'https://i.ibb.co/sJvdxyHr/952285.webp';
 
                   return YouthHouseCard(
-                    name: isArabic ? data['nameAR'] : data['nameFR'],
+                    name: isArabic
+                        ? (data['type']['ar'] + ' ' + data['nameAR'])
+                        : (isEnglish
+                            ? (data['type']['en'] + ' ' + data['nameFR'])
+                            : data['type']['fr'] + ' ' + data['nameFR']),
                     location: isArabic
                         ? (data['state']['name_ar'] +
                             '، ' +
@@ -425,16 +420,6 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                             instagramUrl: data['instagramUrl'] ?? '',
                             twitterUrl: data['twitterUrl'] ?? '',
                             address: data['address'] ?? '',
-                            latitude: (data['latitude'] is double)
-                                ? data['latitude']
-                                : (data['latitude'] is int)
-                                    ? (data['latitude'] as int).toDouble()
-                                    : 0.0,
-                            longitude: (data['longitude'] is double)
-                                ? data['longitude']
-                                : (data['longitude'] is int)
-                                    ? (data['longitude'] as int).toDouble()
-                                    : 0.0,
                           ),
                         ),
                       );

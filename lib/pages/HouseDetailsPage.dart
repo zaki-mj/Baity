@@ -13,8 +13,7 @@ class HouseDetailsPage extends StatelessWidget {
   final String instagramUrl;
   final String twitterUrl;
   final String address;
-  final double latitude;
-  final double longitude;
+
 
   const HouseDetailsPage({
     Key? key,
@@ -28,8 +27,6 @@ class HouseDetailsPage extends StatelessWidget {
     required this.instagramUrl,
     required this.twitterUrl,
     required this.address,
-    required this.latitude,
-    required this.longitude,
   }) : super(key: key);
 
   Future<void> _launchURL(BuildContext context, String? url,
