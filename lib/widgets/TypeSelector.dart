@@ -17,6 +17,7 @@ class TypeSelector extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
 
     return DropdownButtonFormField<String>(
+      isExpanded: true,
       value: selectedType,
       decoration: InputDecoration(
         labelText: loc.type,
@@ -33,11 +34,19 @@ class TypeSelector extends StatelessWidget {
       items: [
         DropdownMenuItem(
           value: 'youth_house',
-          child: Text(loc.tabYouthHouses),
+          child: Text(
+            loc.tabYouthHouses,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
         DropdownMenuItem(
           value: 'youth_camp',
-          child: Text(loc.tabYouthCamps),
+          child: Text(
+            loc.tabYouthCamps,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
       ],
       onChanged: onTypeChanged,

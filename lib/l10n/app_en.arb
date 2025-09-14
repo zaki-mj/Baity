@@ -7,12 +7,6 @@
   "tabAll": "All",
   "tabYouthHouses": "Youth Houses",
   "tabYouthCamps": "Youth Camps",
-  "youthHouseName1": "Ouled Mimoun Youth House",
-  "youthHouseLocation1": "Ouled Mimoun, Tlemcen, Algeria",
-  "youthHouseName2": "Marsa Ben M'hidi Youth Camp",
-  "youthHouseLocation2": "Marsa Ben M'hidi, Tlemcen, Algeria",
-  "youthHouseName3": "Lalla Setti House",
-  "youthHouseLocation3": "Lalla Setti, Tlemcen, Algeria",
   "detailsTitle": "Details",
   "availableSpots": "Available Spots",
   "description": "Description",
@@ -96,5 +90,6 @@
   "state": "State",
   "city": "City",
   "adminInterface": "Administrators Interface",
-  "explore": "Explore"
+  "explore": "Explore",
+  "numberofinstitution":"Number of institution"
 }

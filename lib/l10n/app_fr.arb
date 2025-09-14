@@ -6,14 +6,8 @@
   "slogan": "Trouvez votre prochaine aventure dans les maisons et camps de jeunesse !",
   "adminLogin": "Connexion administrateur",
   "tabAll": "Tout",
-  "tabYouthHouses": "Maisons de jeunesse",
+  "tabYouthHouses": "Auberge de jeunesse",
   "tabYouthCamps": "Camps de jeunesse",
-  "youthHouseName1": "Maison de jeunesse Ouled Mimoun",
-  "youthHouseLocation1": "Ouled Mimoun, Tlemcen, Algérie",
-  "youthHouseName2": "Camp de jeunesse Marsa Ben M'hidi",
-  "youthHouseLocation2": "Marsa Ben M'hidi, Tlemcen, Algérie",
-  "youthHouseName3": "Maison de jeunesse Lalla Setti",
-  "youthHouseLocation3": "Lalla Setti, Tlemcen, Algérie",
   "detailsTitle": "Détails",
   "availableSpots": "Places disponibles",
   "description": "Description",
@@ -97,5 +91,6 @@
   "state": "Wilaya",
   "city": "Commune",
   "adminInterface": "Interface Des Administrateurs",
-  "explore":"Explorer"
+  "explore":"Explorer",
+  "numberofinstitution":"Nombre d'établissement"
 } 
