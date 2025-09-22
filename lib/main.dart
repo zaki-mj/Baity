@@ -33,22 +33,22 @@ class BaityApp extends StatelessWidget {
     final localeProvider = Provider.of<LocaleProvider>(context);
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Baity',
-      theme: themeProvider.theme,
-      locale: localeProvider.locale,
-      supportedLocales: const [
-        Locale('ar'),
-        Locale('en'),
-        Locale('fr'),
-      ],
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: const StartupDecider(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Baity',
+        theme: themeProvider.theme,
+        locale: localeProvider.locale,
+        supportedLocales: const [
+          Locale('ar'),
+          Locale('en'),
+          Locale('fr'),
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        home: const StartupDecider(),
+        );
   }
 }

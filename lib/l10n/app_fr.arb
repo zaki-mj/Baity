@@ -73,10 +73,9 @@
   "save": "Enregistrer",
   "youthHouseUpdated": "Maison de jeunesse mise à jour avec succès !",
   "youthHouseAdded": "Maison de jeunesse ajoutée avec succès !",
-  "deleteYouthHouse": "Supprimer {houseName} ?",
   "deleteConfirmation": "Êtes-vous sûr de vouloir supprimer cette maison de jeunesse ? Cette action ne peut pas être annulée.",
   "delete": "Supprimer",
-  "deletedSuccessfully": "{houseName} supprimé avec succès",
+  "deletedSuccessfully": "Supprimé avec succès",
   "manageYouthHouses": "Gérer les maisons et camps de jeunesse",
   "locationsManaged": "{count} emplacements gérés",
   "errorEnterEmail": "Veuillez entrer votre email",
@@ -92,5 +91,7 @@
   "city": "Commune",
   "adminInterface": "Interface Des Administrateurs",
   "explore":"Explorer",
-  "numberofinstitution":"Nombre d'établissement"
+  "numberofinstitution":"Nombre d'établissement",
+  "errorNotFound":"Aucune donnée n'a été trouvée",
+  "add":"Ajouter"
 } 

@@ -190,7 +190,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                           print("User picked: $value");
                           setState(() {
                             selectedState = value;
-                            queryType = value;
                           });
                         },
                       ),
@@ -231,7 +230,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                   stream: _buildQuery(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return const Center(child: Text('Error loading data'));
+                      return Center(child: Text(loc.errorUnknown));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -240,7 +239,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                     final docs = snapshot.data!.docs;
 
                     if (docs.isEmpty) {
-                      return const Center(child: Text('No places found'));
+                      return Center(child: Text(loc.errorNotFound));
                     }
 
                     return ListView.builder(
@@ -274,7 +273,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             );
                           },
                           onDelete: () {
-                            _showDeleteDialog(context, house['nameAR'], doc.id);
+                            isArabic
+                                ? _showDeleteDialog(
+                                    context, house['nameAR'], doc.id)
+                                : _showDeleteDialog(
+                                    context, house['nameFR'], doc.id);
                           },
                         );
                       },
@@ -323,7 +326,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             color: theme.colorScheme.onPrimary,
           ),
           label: Text(
-            'Add New',
+            loc.add,
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
@@ -342,8 +345,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       builder: (BuildContext dialogContext) {
         final loc = AppLocalizations.of(dialogContext)!;
 
+        final isArabic = Localizations.localeOf(context).languageCode == 'ar';
         return AlertDialog(
-          title: Text('Delete $houseName?'),
+          title: Text(loc.delete + ' "$houseName"?'),
           content: Text(loc.deleteConfirmation),
           actions: [
             TextButton(
@@ -363,7 +367,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                       .delete();
 
                   scaffoldMessenger.showSnackBar(
-                    SnackBar(content: Text('$houseName deleted successfully')),
+                    SnackBar(content: Text(loc.deletedSuccessfully)),
                   );
 
                   setState(() {

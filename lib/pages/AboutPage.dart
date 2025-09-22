@@ -23,10 +23,9 @@ class AboutPage extends StatelessWidget {
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
-                  Icon(
-                    Icons.home,
-                    size: 80,
-                    color: Theme.of(context).colorScheme.primary,
+                  Image.asset(
+                    "lib/assets/images/icon.png",
+                    scale: 6,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -103,7 +102,7 @@ class AboutPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(loc.appVersion),
-                    subtitle: Text(loc.versionNumber),
+                    subtitle: Text("0.4.1"),
                   ),
                   ListTile(
                     leading: Icon(

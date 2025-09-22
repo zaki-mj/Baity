@@ -224,7 +224,6 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                         print("User picked: $value");
                         setState(() {
                           selectedState = value;
-                          queryType = value;
                         });
                       },
                     ),
@@ -266,7 +265,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text("data"));
+                  return Center(child: Text(loc.errorNotFound));
                 }
                 final houses = snapshot.data!.docs;
 

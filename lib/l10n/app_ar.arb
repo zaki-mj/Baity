@@ -73,10 +73,9 @@
   "save": "حفظ",
   "youthHouseUpdated": "تم تحديث بيت الشباب بنجاح!",
   "youthHouseAdded": "تم إضافة بيت الشباب بنجاح!",
-  "deleteYouthHouse": "حذف {houseName}؟",
   "deleteConfirmation": "هل أنت متأكد من أنك تريد حذف هذا بيت الشباب؟ لا يمكن التراجع عن هذا الإجراء.",
   "delete": "حذف",
-  "deletedSuccessfully": "تم حذف {houseName} بنجاح",
+  "deletedSuccessfully": "تم الحذف بنجاح",
   "manageYouthHouses": "إدارة بيوت ومخيمات الشباب",
   "locationsManaged": "{count} موقع مُدار",
   "errorEnterEmail": "يرجى إدخال بريدك الإلكتروني",
@@ -92,5 +91,7 @@
   "city": "البلدية",
   "adminInterface": "واجهة المشرفين",
   "explore": "استكشاف",
-  "numberofinstitution":"عدد المؤسسات"
+  "numberofinstitution":"عدد المؤسسات",
+  "errorNotFound":"لم يتم العثور على اي معطيات",
+  "add":"اضافة"
 }

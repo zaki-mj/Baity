@@ -72,10 +72,9 @@
   "save": "Save",
   "youthHouseUpdated": "Youth house updated successfully!",
   "youthHouseAdded": "Youth house added successfully!",
-  "deleteYouthHouse": "Delete {houseName}?",
   "deleteConfirmation": "Are you sure you want to delete this youth house? This action cannot be undone.",
   "delete": "Delete",
-  "deletedSuccessfully": "{houseName} deleted successfully",
+  "deletedSuccessfully": "Deleted successfully",
   "manageYouthHouses": "Manage youth houses and camps",
   "locationsManaged": "{count} locations managed",
   "errorEnterEmail": "Please enter your email",
@@ -91,5 +90,9 @@
   "city": "City",
   "adminInterface": "Administrators Interface",
   "explore": "Explore",
-  "numberofinstitution":"Number of institution"
+  "numberofinstitution":"Number of institution",
+  "errorNotFound":"No data Was found",
+  "add":"Add",
+  "delete":"Delete"
+
 }
