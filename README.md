@@ -55,13 +55,9 @@ Supported languages:
 - 🇬🇧 English (`app_en.arb`)
 
 ---
+## Documentation
 
-## 📈 Roadmap
-
-- [ ] Interactive maps with geolocation
-- [ ] Filter by amenities, availability, or ratings
-- [ ] Push notifications for newly added listings
-- [ ] User-side account system (bookmark/save favorites)
+- [Presentation Slides](docs/presentation.pptx)
 
 ---
 
