@@ -1,6 +1,7 @@
 import 'package:baity/pages/welcome.dart';
 import 'package:baity/widgets/setupdecider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:baity/themes/theme_provider.dart';
@@ -10,8 +11,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
-  print("Firebase Initialized");
 
   runApp(
     MultiProvider(
@@ -33,22 +34,22 @@ class BaityApp extends StatelessWidget {
     final localeProvider = Provider.of<LocaleProvider>(context);
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Baity',
-        theme: themeProvider.theme,
-        locale: localeProvider.locale,
-        supportedLocales: const [
-          Locale('ar'),
-          Locale('en'),
-          Locale('fr'),
-        ],
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        home: const StartupDecider(),
-        );
+      debugShowCheckedModeBanner: false,
+      title: 'Baity',
+      theme: themeProvider.theme,
+      locale: localeProvider.locale,
+      supportedLocales: const [
+        Locale('ar'),
+        Locale('en'),
+        Locale('fr'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      home: StartupDecider(),
+    );
   }
 }
