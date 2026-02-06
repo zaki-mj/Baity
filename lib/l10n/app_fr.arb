@@ -35,7 +35,7 @@
   "technicalDetails": "Détails techniques",
   "appVersion": "Version de l'application",
   "versionNumber": "1.0.0",
-  "developedWith": "Développé avec Flutter",
+  "developedWith": "Développé avec",
   "credits": "Crédits",
   "ideaBy": "Idée de",
   "developedBy": "Développé par",
@@ -93,5 +93,16 @@
   "explore":"Explorer",
   "numberofinstitution":"Nombre d'établissement",
   "errorNotFound":"Aucune donnée n'a été trouvée",
-  "add":"Ajouter"
+  "add":"Ajouter",
+  "facebookLinkNotAvailable": "Lien Facebook non disponible",
+  "instagramLinkNotAvailable": "Lien Instagram non disponible",
+  "twitterLinkNotAvailable": "Lien TikTok non disponible",
+  "contribute": "Contribuer",
+  "contributeTitle": "Contribuer",
+  "contributeDescription": "Notre application ne peut grandir qu'avec la contribution des maisons de jeunes à travers le pays. Pour nous aider et ajouter votre propre établissement, veuillez envoyer les détails suivants à l'adresse e-mail ci-dessous.",
+  "contributeDetails": "Détails requis : Nom de l'établissement, emplacement Google Maps, informations de contact et liens de médias sociaux.",
+  "contributeEmail": "zakariamedjdoub.dev@gmail.com",
+  "contributeButton": "Envoyer un e-mail",
+  "publisher": "Éditeur",
+  "jawalAssociation": "Association Jawal pour les activités de jeunesse"
 } 

@@ -15,10 +15,6 @@ final ThemeData lightTheme = ThemeData(
     onPrimary: Colors.white,
     onSecondary: Colors.black,
   ),
-  cardTheme: CardTheme(
-    color: Colors.white,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-  ),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -35,9 +31,5 @@ final ThemeData darkTheme = ThemeData(
     background: Color(0xFF1E1E1E),
     onPrimary: Colors.white,
     onSecondary: Colors.white70,
-  ),
-  cardTheme: CardTheme(
-    color: Color(0xFF3A3A3A),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   ),
 );

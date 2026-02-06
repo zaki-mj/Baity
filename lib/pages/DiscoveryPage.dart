@@ -1,11 +1,12 @@
 import 'package:baity/pages/AdminDashboardPage.dart';
 import 'package:baity/pages/AdminLoginPage.dart';
+import 'package:baity/pages/ContributePage.dart';
 import 'package:baity/services/location_service.dart';
 import 'package:baity/widgets/TypeSelector.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/widgets/YouthHouseCard.dart';
 import 'package:baity/pages/HouseDetailsPage.dart';
 import 'package:baity/pages/SettingsPage.dart';
@@ -21,8 +22,7 @@ class DiscoveryPage extends StatefulWidget {
   State<DiscoveryPage> createState() => _DiscoveryPageState();
 }
 
-class _DiscoveryPageState extends State<DiscoveryPage>
-    with SingleTickerProviderStateMixin {
+class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> states = [];
 
   String? selectedState;
@@ -42,8 +42,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> _buildQuery() {
-    Query<Map<String, dynamic>> query =
-        FirebaseFirestore.instance.collection('places');
+    Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('places');
 
     if (selectedState != null && selectedState!.isNotEmpty) {
       query = query.where('state.code', isEqualTo: selectedState);
@@ -60,9 +59,7 @@ class _DiscoveryPageState extends State<DiscoveryPage>
     bool isValidUrl(String? url) {
       if (url == null) return false;
       final uri = Uri.tryParse(url);
-      return uri != null &&
-          uri.hasAbsolutePath &&
-          (uri.isScheme('http') || uri.isScheme('https'));
+      return uri != null && uri.hasAbsolutePath && (uri.isScheme('http') || uri.isScheme('https'));
     }
 
     final loc = AppLocalizations.of(context)!;
@@ -90,17 +87,14 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.home,
-                        size: 48,
-                        color: Theme.of(context).colorScheme.onPrimary),
+                    Icon(Icons.home, size: 48, color: Theme.of(context).colorScheme.onPrimary),
                     const SizedBox(height: 8),
                     Text(
                       AppLocalizations.of(context)!.appTitle,
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ],
                 ),
@@ -120,6 +114,25 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SettingsPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: Text(
+                  loc.contribute,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.pop(context); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ContributePage(),
                     ),
                   );
                 },
@@ -273,38 +286,18 @@ class _DiscoveryPageState extends State<DiscoveryPage>
                   itemCount: houses.length,
                   itemBuilder: (context, index) {
                     final data = houses[index].data();
-                    String imageUrl = isValidUrl(data['imageUrl'])
-                        ? data['imageUrl']
-                        : 'https://i.ibb.co/sJvdxyHr/952285.webp';
+                    String imageUrl = isValidUrl(data['imageUrl']) ? data['imageUrl'] : 'https://i.ibb.co/sJvdxyHr/952285.webp';
                     return YouthHouseCard(
-                      name: isArabic
-                          ? (data['type']['ar'] + ' ' + data['nameAR'])
-                          : (isEnglish
-                              ? (data['type']['en'] + ' ' + data['nameFR'])
-                              : data['type']['fr'] + ' ' + data['nameFR']),
-                      location: isArabic
-                          ? (data['state']['name_ar'] +
-                              '، ' +
-                              data['city']['name_ar'])
-                          : (data['state']['name_fr'] +
-                              ', ' +
-                              data['city']['name_fr']),
+                      name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : (isEnglish ? (data['type']['en'] + ' ' + data['nameFR']) : data['type']['fr'] + ' ' + data['nameFR']),
+                      location: isArabic ? (data['state']['name_ar'] + '، ' + data['city']['name_ar']) : (data['state']['name_fr'] + ', ' + data['city']['name_fr']),
                       imageUrl: imageUrl,
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HouseDetailsPage(
-                              name: isArabic
-                                  ? (data['type']['ar'] + ' ' + data['nameAR'])
-                                  : data['nameFR'],
-                              location: isArabic
-                                  ? (data['state']['name_ar'] +
-                                      '، ' +
-                                      data['city']['name_ar'])
-                                  : (data['state']['name_fr'] +
-                                      ', ' +
-                                      data['city']['name_fr']),
+                              name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : data['nameFR'],
+                              location: isArabic ? (data['state']['name_ar'] + '، ' + data['city']['name_ar']) : (data['state']['name_fr'] + ', ' + data['city']['name_fr']),
                               imageUrl: imageUrl,
                               availableSpots: data['spots'] ?? 0,
                               phone: data['phone'] ?? '',

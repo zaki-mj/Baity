@@ -1,10 +1,11 @@
 import 'package:baity/pages/DiscoveryPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/pages/SettingsPage.dart';
 import 'package:baity/pages/AboutPage.dart';
 import 'package:baity/pages/welcome.dart';
+import 'package:baity/pages/ContributePage.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -32,8 +33,7 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.home,
-                    size: 48, color: Theme.of(context).colorScheme.onPrimary),
+                Icon(Icons.home, size: 48, color: Theme.of(context).colorScheme.onPrimary),
                 const SizedBox(height: 8),
                 Text(
                   loc.appTitle,
@@ -47,10 +47,7 @@ class AppDrawer extends StatelessWidget {
                   Text(
                     loc.loggedInAs(user.email ?? ''),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimary
-                              .withOpacity(0.8),
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                         ),
                   ),
                 ],

@@ -2,7 +2,7 @@ import 'package:baity/local_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:baity/themes/theme_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,13 +24,11 @@ class HomePage extends StatelessWidget {
               onChanged: (_) => themeProvider.toggleTheme(),
               activeColor: Theme.of(context).focusColor,
               inactiveThumbColor: Colors.brown,
-              trackOutlineColor: MaterialStateProperty.all(
-                  const Color.fromARGB(0, 165, 64, 64)),
+              trackOutlineColor: MaterialStateProperty.all(const Color.fromARGB(0, 165, 64, 64)),
             ),
             ElevatedButton(
               onPressed: () {
-                final provider =
-                    Provider.of<LocaleProvider>(context, listen: false);
+                final provider = Provider.of<LocaleProvider>(context, listen: false);
                 final isArabic = provider.locale.languageCode == 'ar';
                 provider.setLocale(isArabic ? Locale('en') : Locale('ar'));
               },

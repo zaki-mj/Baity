@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/pages/AdminDashboardPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> loginAdmin(
-    String email, String password, BuildContext context) async {
+Future<void> loginAdmin(String email, String password, BuildContext context) async {
   final loc = AppLocalizations.of(context)!;
   try {
-    final UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -111,8 +109,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color:
-                                    theme.colorScheme.primary.withOpacity(0.3),
+                                color: theme.colorScheme.primary.withOpacity(0.3),
                                 blurRadius: 20,
                                 offset: const Offset(0, 10),
                               ),
@@ -160,9 +157,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       ),
                       child: Form(
                         key: _formKey,
-                        autovalidateMode: _showValidationErrors
-                            ? AutovalidateMode.always
-                            : AutovalidateMode.disabled,
+                        autovalidateMode: _showValidationErrors ? AutovalidateMode.always : AutovalidateMode.disabled,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -174,8 +169,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                   return loc.errorEnterEmail;
                                 }
                                 // Simple email validation
-                                if (!RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+")
-                                    .hasMatch(value)) {
+                                if (!RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+").hasMatch(value)) {
                                   return loc.errorValidEmail;
                                 }
                                 return null;
@@ -206,8 +200,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline
-                                        .withOpacity(0.5),
+                                    color: theme.colorScheme.outline.withOpacity(0.5),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -246,9 +239,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isPasswordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
+                                    _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                                     color: theme.colorScheme.primary,
                                   ),
                                   onPressed: () {
@@ -277,8 +268,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline
-                                        .withOpacity(0.5),
+                                    color: theme.colorScheme.outline.withOpacity(0.5),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -310,8 +300,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 borderRadius: BorderRadius.circular(16),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: theme.colorScheme.primary
-                                        .withOpacity(0.3),
+                                    color: theme.colorScheme.primary.withOpacity(0.3),
                                     blurRadius: 12,
                                     offset: const Offset(0, 6),
                                   ),
@@ -324,8 +313,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                         setState(() {
                                           _showValidationErrors = true;
                                         });
-                                        if (_formKey.currentState?.validate() ??
-                                            false) {
+                                        if (_formKey.currentState?.validate() ?? false) {
                                           setState(() {
                                             _isLoading = true;
                                           });
@@ -352,16 +340,14 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                         width: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
+                                          valueColor: AlwaysStoppedAnimation<Color>(
                                             theme.colorScheme.onPrimary,
                                           ),
                                         ),
                                       )
                                     : Text(
                                         loc.loginButton,
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
+                                        style: theme.textTheme.titleMedium?.copyWith(
                                           color: theme.colorScheme.onPrimary,
                                           fontWeight: FontWeight.bold,
                                         ),

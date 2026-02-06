@@ -2,7 +2,7 @@ import 'package:baity/services/location_service.dart';
 import 'package:baity/widgets/TypeSelector.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/pages/AddEditYouthHousePage.dart';
 import 'package:baity/widgets/AppDrawer.dart';
 import 'package:baity/widgets/AdminYouthHouseCard.dart';
@@ -41,8 +41,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
 
   Future<void> fetchNumberOfHouses() async {
     try {
-      final querySnapshot =
-          await FirebaseFirestore.instance.collection('places').get();
+      final querySnapshot = await FirebaseFirestore.instance.collection('places').get();
 
       if (!mounted) return;
 
@@ -64,9 +63,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   bool isValidUrl(String? url) {
     if (url == null) return false;
     final uri = Uri.tryParse(url);
-    return uri != null &&
-        uri.hasAbsolutePath &&
-        (uri.isScheme('http') || uri.isScheme('https'));
+    return uri != null && uri.hasAbsolutePath && (uri.isScheme('http') || uri.isScheme('https'));
   }
 
   @override
@@ -77,8 +74,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     Stream<QuerySnapshot<Map<String, dynamic>>> _buildQuery() {
-      Query<Map<String, dynamic>> query =
-          FirebaseFirestore.instance.collection('places');
+      Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('places');
 
       if (selectedState != null && selectedState!.isNotEmpty) {
         query = query.where('state.code', isEqualTo: selectedState);
@@ -116,8 +112,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
@@ -250,9 +245,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                         final house = doc.data() as Map<String, dynamic>;
 
                         // Validate the image URL
-                        String imageUrl = isValidUrl(house['imageUrl'])
-                            ? house['imageUrl']
-                            : 'https://i.ibb.co/sJvdxyHr/952285.webp';
+                        String imageUrl = isValidUrl(house['imageUrl']) ? house['imageUrl'] : 'https://i.ibb.co/sJvdxyHr/952285.webp';
 
                         return AdminYouthHouseCard(
                           house: house,
@@ -264,8 +257,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                                 builder: (context) => AddEditYouthHousePage(
                                   isEditing: true,
                                   houseData: {
-                                    'id':
-                                        doc.id, // attach Firestore document id
+                                    'id': doc.id, // attach Firestore document id
                                     ...house,
                                   },
                                 ),
@@ -273,11 +265,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             );
                           },
                           onDelete: () {
-                            isArabic
-                                ? _showDeleteDialog(
-                                    context, house['nameAR'], doc.id)
-                                : _showDeleteDialog(
-                                    context, house['nameFR'], doc.id);
+                            isArabic ? _showDeleteDialog(context, house['nameAR'], doc.id) : _showDeleteDialog(context, house['nameFR'], doc.id);
                           },
                         );
                       },
@@ -355,16 +343,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               onPressed: () => Navigator.of(dialogContext).pop(),
             ),
             TextButton(
-              child:
-                  Text(loc.delete, style: const TextStyle(color: Colors.red)),
+              child: Text(loc.delete, style: const TextStyle(color: Colors.red)),
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
 
                 try {
-                  await FirebaseFirestore.instance
-                      .collection('places')
-                      .doc(docId)
-                      .delete();
+                  await FirebaseFirestore.instance.collection('places').doc(docId).delete();
 
                   scaffoldMessenger.showSnackBar(
                     SnackBar(content: Text(loc.deletedSuccessfully)),

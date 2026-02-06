@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

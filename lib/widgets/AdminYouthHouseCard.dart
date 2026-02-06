@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 
 class AdminYouthHouseCard extends StatelessWidget {
   final Map<String, dynamic> house;
@@ -22,10 +22,7 @@ class AdminYouthHouseCard extends StatelessWidget {
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     // Use the validated imageUrl if passed, else fallback to house['imageUrl'], then generic
-    final String displayImageUrl = imageUrl ??
-        (house['imageUrl']?.isNotEmpty == true
-            ? house['imageUrl']
-            : 'https://i.ibb.co/4wP1LMmL/20530961.jpg');
+    final String displayImageUrl = imageUrl ?? (house['imageUrl']?.isNotEmpty == true ? house['imageUrl'] : 'https://i.ibb.co/4wP1LMmL/20530961.jpg');
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -71,15 +68,11 @@ class AdminYouthHouseCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: house['type']['en'] == 'Youth house'
-                              ? Colors.blue.withOpacity(0.9)
-                              : Colors.green.withOpacity(0.9),
+                          color: house['type']['en'] == 'Youth house' ? Colors.blue.withOpacity(0.9) : Colors.green.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          house['type']['en'] == 'Youth house'
-                              ? loc.tabYouthHouses
-                              : loc.tabYouthCamps,
+                          house['type']['en'] == 'Youth house' ? loc.tabYouthHouses : loc.tabYouthCamps,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
@@ -118,17 +111,9 @@ class AdminYouthHouseCard extends StatelessWidget {
                                   const SizedBox(width: 4),
                                   Expanded(
                                     child: Text(
-                                      isArabic
-                                          ? (house['state']['name_ar'] +
-                                              '، ' +
-                                              house['city']['name_ar'])
-                                          : (house['state']['name_fr'] +
-                                              ', ' +
-                                              house['city']['name_fr']),
-                                      style:
-                                          theme.textTheme.bodyMedium?.copyWith(
-                                        color: theme.colorScheme.onSurface
-                                            .withOpacity(0.7),
+                                      isArabic ? (house['state']['name_ar'] + '، ' + house['city']['name_ar']) : (house['state']['name_fr'] + ', ' + house['city']['name_fr']),
+                                      style: theme.textTheme.bodyMedium?.copyWith(
+                                        color: theme.colorScheme.onSurface.withOpacity(0.7),
                                       ),
                                     ),
                                   ),
@@ -146,8 +131,7 @@ class AdminYouthHouseCard extends StatelessWidget {
                             color: theme.colorScheme.secondary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color:
-                                  theme.colorScheme.secondary.withOpacity(0.3),
+                              color: theme.colorScheme.secondary.withOpacity(0.3),
                             ),
                           ),
                           child: Row(children: [

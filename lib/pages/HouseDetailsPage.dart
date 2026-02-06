@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HouseDetailsPage extends StatelessWidget {
@@ -7,13 +7,13 @@ class HouseDetailsPage extends StatelessWidget {
   final String location;
   final String? imageUrl; // Changed to final
   final int availableSpots;
-  final String phone;
-  final String email;
+  final String? phone;
+  final String? email;
+  final String? secondPhone;
   final String facebookUrl;
   final String instagramUrl;
   final String twitterUrl;
   final String address;
-
 
   const HouseDetailsPage({
     Key? key,
@@ -21,16 +21,16 @@ class HouseDetailsPage extends StatelessWidget {
     required this.location,
     this.imageUrl,
     required this.availableSpots,
-    required this.phone,
-    required this.email,
+    this.phone,
+    this.email,
+    this.secondPhone,
     required this.facebookUrl,
     required this.instagramUrl,
     required this.twitterUrl,
     required this.address,
   }) : super(key: key);
 
-  Future<void> _launchURL(BuildContext context, String? url,
-      {String? fallbackMessage}) async {
+  Future<void> _launchURL(BuildContext context, String? url, {String? fallbackMessage}) async {
     if (url == null || url.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(fallbackMessage ?? 'Link not available')),
@@ -114,8 +114,7 @@ class HouseDetailsPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(Icons.location_on,
-                                color: theme.colorScheme.primary),
+                            Icon(Icons.location_on, color: theme.colorScheme.primary),
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(
@@ -130,8 +129,7 @@ class HouseDetailsPage extends StatelessWidget {
                           children: [
                             Icon(Icons.hotel, color: theme.colorScheme.primary),
                             const SizedBox(width: 6),
-                            Text('${loc.detailsSpots}: $availableSpots',
-                                style: theme.textTheme.bodyMedium),
+                            Text('${loc.detailsSpots}: $availableSpots', style: theme.textTheme.bodyMedium),
                           ],
                         ),
                       ],
@@ -158,35 +156,53 @@ class HouseDetailsPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(Icons.phone, color: theme.colorScheme.primary),
-                            const SizedBox(width: 6),
-                            GestureDetector(
-                              onTap: () => _launchURL(context, 'tel:$phone'),
-                              child: Text(phone,
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.colorScheme.primary,
-                                    decoration: TextDecoration.underline,
-                                  )),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(Icons.email, color: theme.colorScheme.primary),
-                            const SizedBox(width: 6),
-                            GestureDetector(
-                              onTap: () => _launchURL(context, 'mailto:$email'),
-                              child: Text(email,
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.colorScheme.primary,
-                                    decoration: TextDecoration.underline,
-                                  )),
-                            ),
-                          ],
-                        ),
+                        if (phone != null && phone!.isNotEmpty)
+                          Row(
+                            children: [
+                              Icon(Icons.phone, color: theme.colorScheme.primary),
+                              const SizedBox(width: 6),
+                              GestureDetector(
+                                onTap: () => _launchURL(context, 'tel:$phone'),
+                                child: Text(phone!,
+                                    style: theme.textTheme.bodyLarge?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        if (phone != null && phone!.isNotEmpty) const SizedBox(height: 8),
+                        if (email != null && email!.isNotEmpty)
+                          Row(
+                            children: [
+                              Icon(Icons.email, color: theme.colorScheme.primary),
+                              const SizedBox(width: 6),
+                              GestureDetector(
+                                onTap: () => _launchURL(context, 'mailto:$email'),
+                                child: Text(email!,
+                                    style: theme.textTheme.bodyLarge?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        if (email != null && email!.isNotEmpty) const SizedBox(height: 8),
+                        if (secondPhone != null && secondPhone!.isNotEmpty)
+                          Row(
+                            children: [
+                              Icon(Icons.phone_android, color: theme.colorScheme.primary),
+                              const SizedBox(width: 6),
+                              GestureDetector(
+                                onTap: () => _launchURL(context, 'tel:$secondPhone'),
+                                child: Text(secondPhone!,
+                                    style: theme.textTheme.bodyLarge?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                      decoration: TextDecoration.underline,
+                                    )),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
@@ -214,35 +230,77 @@ class HouseDetailsPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                _launchURL(context, facebookUrl,
-                                    fallbackMessage: 'no link');
-                              },
-                              child: Image.asset(
-                                'lib/assets/images/facebook.png',
-                                scale: 20,
-                              ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _launchURL(context, facebookUrl, fallbackMessage: loc.facebookLinkNotAvailable);
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 24,
+                                    backgroundColor: theme.colorScheme.primary,
+                                    child: Text(
+                                      'F',
+                                      style: TextStyle(
+                                        color: theme.colorScheme.onPrimary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  loc.detailsFacebook,
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                _launchURL(context, instagramUrl,
-                                    fallbackMessage: 'no link');
-                              },
-                              child: Image.asset(
-                                'lib/assets/images/instagram.png',
-                                scale: 20,
-                              ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _launchURL(context, instagramUrl, fallbackMessage: loc.instagramLinkNotAvailable);
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 24,
+                                    backgroundColor: theme.colorScheme.primary,
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: theme.colorScheme.onPrimary,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  loc.detailsInstagram,
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                _launchURL(context, twitterUrl,
-                                    fallbackMessage: 'no link');
-                              },
-                              child: Image.asset(
-                                'lib/assets/images/twitter.png',
-                                scale: 20,
-                              ),
+                            Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    _launchURL(context, twitterUrl, fallbackMessage: loc.twitterLinkNotAvailable);
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 24,
+                                    backgroundColor: theme.colorScheme.primary,
+                                    child: Icon(
+                                      Icons.music_note,
+                                      color: theme.colorScheme.onPrimary,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  loc.detailsTwitter,
+                                  style: theme.textTheme.bodySmall,
+                                ),
+                              ],
                             ),
                           ],
                         ),

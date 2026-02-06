@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
@@ -40,9 +40,7 @@ class SettingsPage extends StatelessWidget {
                   Consumer<ThemeProvider>(
                     builder: (context, themeProvider, _) => SwitchListTile(
                       secondary: Icon(
-                        themeProvider.isDarkMode
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
+                        themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       title: Text(
@@ -50,14 +48,9 @@ class SettingsPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       subtitle: Text(
-                        themeProvider.isDarkMode
-                            ? 'Switch to light mode'
-                            : 'Switch to dark mode',
+                        themeProvider.isDarkMode ? 'Switch to light mode' : 'Switch to dark mode',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.6),
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             ),
                       ),
                       value: themeProvider.isDarkMode,
@@ -85,18 +78,12 @@ class SettingsPage extends StatelessWidget {
                       subtitle: Text(
                         'Tap to change language',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.6),
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                             ),
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                         size: 16,
                       ),
                       onTap: () {
@@ -113,8 +100,7 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  void _showLanguageDialog(
-      BuildContext context, LocaleProvider localeProvider) {
+  void _showLanguageDialog(BuildContext context, LocaleProvider localeProvider) {
     final loc = AppLocalizations.of(context)!;
     showDialog(
       context: context,
@@ -125,8 +111,7 @@ class SettingsPage extends StatelessWidget {
             child: ListBody(
               children: <Widget>[
                 ListTile(
-                  leading: Icon(Icons.language,
-                      color: Theme.of(context).colorScheme.primary),
+                  leading: Icon(Icons.language, color: Theme.of(context).colorScheme.primary),
                   title: Text(loc.arabic),
                   onTap: () {
                     localeProvider.setLocale(const Locale('ar'));
@@ -134,8 +119,7 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.language,
-                      color: Theme.of(context).colorScheme.primary),
+                  leading: Icon(Icons.language, color: Theme.of(context).colorScheme.primary),
                   title: Text(loc.french),
                   onTap: () {
                     localeProvider.setLocale(const Locale('fr'));
@@ -143,8 +127,7 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.language,
-                      color: Theme.of(context).colorScheme.primary),
+                  leading: Icon(Icons.language, color: Theme.of(context).colorScheme.primary),
                   title: Text(loc.english),
                   onTap: () {
                     localeProvider.setLocale(const Locale('en'));

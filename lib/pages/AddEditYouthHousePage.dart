@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/services/StoreServices.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
@@ -27,8 +27,7 @@ class AddEditYouthHousePage extends StatefulWidget {
 }
 
 Future<List<Map<String, dynamic>>> loadWilayas() async {
-  final String jsonString = await rootBundle
-      .loadString('assets/data/algeria_wilayas_communes_cleaned.json');
+  final String jsonString = await rootBundle.loadString('assets/data/algeria_wilayas_communes_cleaned.json');
   final List<dynamic> jsonData = json.decode(jsonString);
   return jsonData.cast<Map<String, dynamic>>();
 }
@@ -77,8 +76,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
         _selectedType = 'youth_camp';
       }
 
-      _NumberOfSpotsController.text =
-          (widget.houseData!['spots'] ?? 20).toString();
+      _NumberOfSpotsController.text = (widget.houseData!['spots'] ?? 20).toString();
 
       // Just store state & city raw data for now
       selectedStateCode = widget.houseData!['state']?['code'];
@@ -92,11 +90,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
     final locale = Localizations.localeOf(context);
     final isArabic = locale.languageCode == 'ar';
 
-    if (widget.isEditing &&
-        widget.houseData != null &&
-        selectedCityName == null) {
-      selectedCityName =
-          widget.houseData!['city']?[isArabic ? 'name_ar' : 'name_fr'];
+    if (widget.isEditing && widget.houseData != null && selectedCityName == null) {
+      selectedCityName = widget.houseData!['city']?[isArabic ? 'name_ar' : 'name_fr'];
     }
 
     // Only load states & cities once
@@ -201,9 +196,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.isEditing
-                                ? loc.editYouthHouse
-                                : loc.addNewYouthHouse,
+                            widget.isEditing ? loc.editYouthHouse : loc.addNewYouthHouse,
                             style: theme.textTheme.headlineSmall?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.bold,
@@ -274,8 +267,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               value: selectedStateCode,
                               decoration: InputDecoration(
                                 labelText: AppLocalizations.of(context)!.state,
-                                prefixIcon: Icon(Icons.location_city,
-                                    color: theme.colorScheme.primary),
+                                prefixIcon: Icon(Icons.location_city, color: theme.colorScheme.primary),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
@@ -285,8 +277,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline
-                                        .withOpacity(0.5),
+                                    color: theme.colorScheme.outline.withOpacity(0.5),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -302,8 +293,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                               items: states.map((state) {
                                 return DropdownMenuItem<String>(
                                   value: state['code'],
-                                  child: Text(
-                                      '${state['code']} - ${state['name']}'),
+                                  child: Text('${state['code']} - ${state['name']}'),
                                 );
                               }).toList(),
                               onChanged: (value) async {
@@ -326,8 +316,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
                                   borderSide: BorderSide(
-                                    color: theme.colorScheme.outline
-                                        .withOpacity(0.5),
+                                    color: theme.colorScheme.outline.withOpacity(0.5),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
@@ -341,9 +330,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 fillColor: theme.colorScheme.surface,
                               ),
                               items: cities.map((city) {
-                                final cityName = isArabic
-                                    ? city['name_ar']
-                                    : city['name_fr'];
+                                final cityName = isArabic ? city['name_ar'] : city['name_fr'];
                                 return DropdownMenuItem<String>(
                                   value: cityName,
                                   child: Text(cityName),
@@ -467,8 +454,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color:
-                                    theme.colorScheme.primary.withOpacity(0.3),
+                                color: theme.colorScheme.primary.withOpacity(0.3),
                                 blurRadius: 12,
                                 offset: const Offset(0, 6),
                               ),
@@ -489,55 +475,31 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                   orElse: () => {},
                                 );
 
-                                final filteredState =
-                                    Map<String, dynamic>.from(selectedState)
-                                      ..remove('cities');
+                                final filteredState = Map<String, dynamic>.from(selectedState)..remove('cities');
 
                                 final placeData = {
                                   'nameAR': _nameControllerAR.text,
                                   'nameFR': _nameControllerFR.text,
-                                  'location': selectedStateCode != null &&
-                                          selectedCityName != null
-                                      ? '${filteredState['name']} - ${selectedCity['name']}'
-                                      : '',
+                                  'location': selectedStateCode != null && selectedCityName != null ? '${filteredState['name']} - ${selectedCity['name']}' : '',
                                   'type': {
-                                    'ar': _selectedType == 'youth_house'
-                                        ? 'بيت الشباب'
-                                        : 'مخيم الشباب',
-                                    'fr': _selectedType == 'youth_house'
-                                        ? 'Auberge des jeunes'
-                                        : 'Camp des jeunes',
-                                    'en': _selectedType == 'youth_house'
-                                        ? 'Youth house'
-                                        : 'Youth camp',
+                                    'ar': _selectedType == 'youth_house' ? 'بيت الشباب' : 'مخيم الشباب',
+                                    'fr': _selectedType == 'youth_house' ? 'Auberge des jeunes' : 'Camp des jeunes',
+                                    'en': _selectedType == 'youth_house' ? 'Youth house' : 'Youth camp',
                                   },
-                                  'spots': int.tryParse(
-                                      _NumberOfSpotsController.text),
+                                  'spots': int.tryParse(_NumberOfSpotsController.text),
                                   'phone': _phoneController.text,
                                   'email': _emailController.text,
                                   'facebook': _facebookUrlController.text,
                                   'instagram': _instagramUrlController.text,
                                   'twitter': _twitterUrlController.text,
-                                  'imageUrl': _imageUrlController.text
-                                          .trim()
-                                          .isEmpty
-                                      ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg'
-                                      : _imageUrlController.text,
-                                  'state': filteredState.isEmpty
-                                      ? null
-                                      : filteredState,
-                                  'city': selectedCity.isEmpty
-                                      ? null
-                                      : selectedCity,
+                                  'imageUrl': _imageUrlController.text.trim().isEmpty ? 'https://i.ibb.co/4wP1LMmL/20530961.jpg' : _imageUrlController.text,
+                                  'state': filteredState.isEmpty ? null : filteredState,
+                                  'city': selectedCity.isEmpty ? null : selectedCity,
                                   'address': _addressController.text,
                                 };
 
                                 await _storeservices.savePlace(
-                                  docId: widget.isEditing
-                                      ? (widget.houseData != null
-                                          ? widget.houseData!['id']
-                                          : null)
-                                      : null,
+                                  docId: widget.isEditing ? (widget.houseData != null ? widget.houseData!['id'] : null) : null,
                                   data: placeData,
                                 );
 
@@ -546,11 +508,8 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                 final loc = AppLocalizations.of(context)!;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(widget.isEditing
-                                        ? loc.youthHouseUpdated
-                                        : loc.youthHouseAdded),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
+                                    content: Text(widget.isEditing ? loc.youthHouseUpdated : loc.youthHouseAdded),
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
                                   ),
                                 );
 
@@ -577,8 +536,7 @@ class _AddEditYouthHousePageState extends State<AddEditYouthHousePage> {
                                   )
                                 : Text(
                                     widget.isEditing ? loc.update : loc.save,
-                                    style:
-                                        theme.textTheme.titleMedium?.copyWith(
+                                    style: theme.textTheme.titleMedium?.copyWith(
                                       color: theme.colorScheme.onPrimary,
                                       fontWeight: FontWeight.bold,
                                     ),

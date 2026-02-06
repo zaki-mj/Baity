@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -39,10 +39,7 @@ class AboutPage extends StatelessWidget {
                   Text(
                     loc.slogan,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.7),
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -102,7 +99,7 @@ class AboutPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(loc.appVersion),
-                    subtitle: Text("0.4.1"),
+                    subtitle: Text("1.0.0"),
                   ),
                   ListTile(
                     leading: Icon(
@@ -110,7 +107,7 @@ class AboutPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(loc.developedWith),
-                    subtitle: const Text('Flutter & Dart'),
+                    subtitle: const Text('Flutter & Firebase'),
                   ),
                 ],
               ),
@@ -135,6 +132,14 @@ class AboutPage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 12),
+                  ListTile(
+                    leading: Icon(
+                      Icons.public_sharp,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    title: Text(loc.publisher),
+                    subtitle: Text(loc.jawalAssociation),
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.lightbulb_outline,

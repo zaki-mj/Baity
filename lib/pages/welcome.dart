@@ -1,7 +1,7 @@
 import 'package:baity/pages/AdminDashboardPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/pages/DiscoveryPage.dart';
 import 'package:baity/pages/AdminLoginPage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,13 +14,12 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context)!;
     double width = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -87,8 +86,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const DiscoveryPage()),
+                          MaterialPageRoute(builder: (context) => const DiscoveryPage()),
                         );
                       },
                       child: Text(
@@ -115,16 +113,13 @@ class _WelcomePageState extends State<WelcomePage> {
                           // User is logged in, navigate to AdminDashboardPage
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AdminDashboardPage()),
+                              MaterialPageRoute(builder: (context) => const AdminDashboardPage()),
                             );
                           });
                         } else {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => const AdminLoginPage()),
+                            MaterialPageRoute(builder: (context) => const AdminLoginPage()),
                           );
                         }
                       },
