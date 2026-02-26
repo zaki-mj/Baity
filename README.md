@@ -1,24 +1,22 @@
 # Baity
 
-# 🏕️ Baity – Youth Houses & Camps in Algeria
-
-**Baity** is a Flutter app that helps users discover and manage youth houses and camps across Algeria. It features a bilingual UI, admin capabilities for adding and editing listings, and a clean, user-friendly interface.
+**Baity** also known as **Algerian Youth Hostels** is a Flutter app that helps users discover and manage youth houses and camps across Algeria with a clean user-friendly interface.
 
 ---
 
-## ✨ Highlights
+## Highlights
 
-- 🔍 **Discover Locations**: Browse youth centers and camps by city or region
-- 🗂️ **Detailed Listings**: View photos, descriptions, and metadata for each house
-- 🛠️ **Admin Dashboard**: Add or update youth house entries through a built-in admin panel
-- 🌍 **Localization**: Arabic, French, and English support
-- 🧭 Lightweight and fast — optimized for mobile usage in regions with varying connectivity
-- 🔒 **Admin Auth**: Secure login for administrators (email/password or integrated backend)
-- 📁 Uses structured local assets for offline city data and media
+-  **Discover Locations**: Browse youth centers and camps by city or region
+-  **Detailed Listings**: View photos, descriptions, and metadata for each house
+-  **Admin Dashboard**: Add or update youth house entries through a built-in admin panel
+-  **Localization**: Arabic, French, and English support
+-  Lightweight and fast — optimized for mobile usage in regions with varying connectivity
+-  **Admin Auth**: Secure login for administrators (email/password or integrated backend)
+-  Uses structured local assets for offline city data and media
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -37,7 +35,7 @@ flutter run
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Flutter** (Dart)
 - **Provider** for state management
@@ -47,7 +45,7 @@ flutter run
 
 ---
 
-## 🌐 Localization
+##  Localization
 
 Supported languages:
 - 🇩🇿 Arabic (`app_ar.arb`)
@@ -61,12 +59,12 @@ Supported languages:
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Built with 💙 by [Zaki MJ](https://github.com/zaki-mj)
 
 ---
 
-## 📄 License
+## License
 
 MIT License
