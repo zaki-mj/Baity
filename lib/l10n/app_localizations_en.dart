@@ -126,7 +126,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get developedBy => 'Developed by';
 
   @override
-  String get medjdoubHadjirat => 'Medjdoub Hadjirat';
+  String get medjdoubHadjirat => 'Medjdoub Hadjirat, Bourouaha Nassima, Haoulia Djamila ';
 
   @override
   String get medjdoubZakaria => 'Medjdoub Mohammed Zakaria';

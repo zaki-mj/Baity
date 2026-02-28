@@ -126,7 +126,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get developedBy => 'التطوير من';
 
   @override
-  String get medjdoubHadjirat => 'مجدوب هجيرة';
+  String get medjdoubHadjirat => 'مجدوب هجيرة، بورواحة نسيمة، حولية جميلة';
 
   @override
   String get medjdoubZakaria => 'مجدوب محمد زكرياء';

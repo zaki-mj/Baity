@@ -334,7 +334,7 @@ abstract class AppLocalizations {
   /// No description provided for @medjdoubHadjirat.
   ///
   /// In en, this message translates to:
-  /// **'Medjdoub Hadjirat'**
+  /// **'Medjdoub Hadjirat, Bourouaha Nassima, Haoulia Djamila '**
   String get medjdoubHadjirat;
 
   /// No description provided for @medjdoubZakaria.
