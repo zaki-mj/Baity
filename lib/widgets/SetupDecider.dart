@@ -1,10 +1,10 @@
 import 'package:baity/pages/AdminDashboardPage.dart';
+import 'package:baity/pages/navigation_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:baity/pages/welcome.dart';
 import 'package:baity/pages/DiscoveryPage.dart';
-
 
 class StartupDecider extends StatefulWidget {
   const StartupDecider({super.key});
@@ -38,7 +38,7 @@ class _StartupDeciderState extends State<StartupDecider> {
     if (user != null) {
       setState(() => _nextPage = const AdminDashboardPage());
     } else {
-      setState(() => _nextPage = const DiscoveryPage());
+      setState(() => _nextPage = const NavigationShell());
     }
   }
 

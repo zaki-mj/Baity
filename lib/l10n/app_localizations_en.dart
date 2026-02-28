@@ -326,4 +326,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jawalAssociation => 'Jawal Association for youth activities';
+
+  @override
+  String get favorites => 'Favorites';
+
+  @override
+  String get noFavoritesYet => 'No favorites yet';
+
+  @override
+  String get heartSomeHousesFromDiscovery => 'Heart some houses from Discovery to see them here';
 }

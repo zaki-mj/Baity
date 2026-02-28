@@ -106,4 +106,8 @@
   "publisher": "Publisher",
   "jawalAssociation" : "Jawal Association for youth activities"
 
+  ,"favorites": "Favorites",
+  "noFavoritesYet": "No favorites yet",
+  "heartSomeHousesFromDiscovery": "Heart some houses from Discovery to see them here"
+
 }

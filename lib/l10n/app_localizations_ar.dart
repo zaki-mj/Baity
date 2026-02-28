@@ -326,4 +326,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get jawalAssociation => 'جمعية الجوال لنشاطات الشباب';
+
+  @override
+  String get favorites => 'المفضلات';
+
+  @override
+  String get noFavoritesYet => 'لا توجد عناصر مفضلة بعد';
+
+  @override
+  String get heartSomeHousesFromDiscovery => 'اضغط على قلب بعض البيوت من صفحة الاكتشاف لرؤيتها هنا';
 }

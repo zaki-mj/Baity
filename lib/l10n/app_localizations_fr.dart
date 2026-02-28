@@ -326,4 +326,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get jawalAssociation => 'Association Jawal pour les activités de jeunesse';
+
+  @override
+  String get favorites => 'Favoris';
+
+  @override
+  String get noFavoritesYet => 'Aucun favori pour le moment';
+
+  @override
+  String get heartSomeHousesFromDiscovery => 'Ajoutez en favoris des maisons depuis la page Découverte pour les voir ici';
 }

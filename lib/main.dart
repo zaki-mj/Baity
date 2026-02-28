@@ -1,7 +1,7 @@
-import 'package:baity/pages/welcome.dart';
 import 'package:baity/widgets/setupdecider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:baity/services/favorite_service.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:baity/themes/theme_provider.dart';
@@ -13,6 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
+  await FavoriteService.instance.init();
 
   runApp(
     MultiProvider(
@@ -35,7 +36,7 @@ class BaityApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Baity',
+      title: 'Algerian Youth Hostels',
       theme: themeProvider.theme,
       locale: localeProvider.locale,
       supportedLocales: const [

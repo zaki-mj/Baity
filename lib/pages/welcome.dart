@@ -1,4 +1,5 @@
 import 'package:baity/pages/AdminDashboardPage.dart';
+import 'package:baity/pages/navigation_shell.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
@@ -86,7 +87,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const DiscoveryPage()),
+                          MaterialPageRoute(builder: (context) => const NavigationShell()),
                         );
                       },
                       child: Text(

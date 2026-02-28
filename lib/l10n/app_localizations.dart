@@ -726,6 +726,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Jawal Association for youth activities'**
   String get jawalAssociation;
+
+  /// No description provided for @favorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites;
+
+  /// No description provided for @noFavoritesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorites yet'**
+  String get noFavoritesYet;
+
+  /// No description provided for @heartSomeHousesFromDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart some houses from Discovery to see them here'**
+  String get heartSomeHousesFromDiscovery;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

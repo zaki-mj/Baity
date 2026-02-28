@@ -99,7 +99,7 @@ class AboutPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     title: Text(loc.appVersion),
-                    subtitle: Text("1.0.0"),
+                    subtitle: Text("1.1.0"),
                   ),
                   ListTile(
                     leading: Icon(

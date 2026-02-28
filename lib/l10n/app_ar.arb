@@ -105,4 +105,7 @@
   "contributeButton": "إرسال بريد إلكتروني",
   "publisher":"الناشر",
   "jawalAssociation":"جمعية الجوال لنشاطات الشباب"
+  ,"favorites": "المفضلات",
+  "noFavoritesYet": "لا توجد عناصر مفضلة بعد",
+  "heartSomeHousesFromDiscovery": "اضغط على قلب بعض البيوت من صفحة الاكتشاف لرؤيتها هنا"
 }

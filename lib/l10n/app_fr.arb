@@ -105,4 +105,7 @@
   "contributeButton": "Envoyer un e-mail",
   "publisher": "Éditeur",
   "jawalAssociation": "Association Jawal pour les activités de jeunesse"
+  ,"favorites": "Favoris",
+  "noFavoritesYet": "Aucun favori pour le moment",
+  "heartSomeHousesFromDiscovery": "Ajoutez en favoris des maisons depuis la page Découverte pour les voir ici"
 } 
