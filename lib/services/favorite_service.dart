@@ -9,6 +9,7 @@ class FavoriteService extends ChangeNotifier {
   static final FavoriteService instance = FavoriteService._privateConstructor();
 
   static const String _storageKey = 'favorite_houses';
+
   SharedPreferences? _prefs;
   Map<String, Map<String, dynamic>> _favorites = {};
 
@@ -19,8 +20,6 @@ class FavoriteService extends ChangeNotifier {
       try {
         final decoded = json.decode(raw) as Map<String, dynamic>;
         _favorites = decoded.map((key, value) => MapEntry(key, Map<String, dynamic>.from(value as Map)));
-        // Ensure older saved favorites include explicit localized type labels
-        await _migrateStoredFavorites();
       } catch (e) {
         _favorites = {};
       }
@@ -36,32 +35,27 @@ class FavoriteService extends ChangeNotifier {
   }
 
   Future<void> addFavorite(String id, Map<String, dynamic> data) async {
-    // Store the data map as-is; _encodeDeep will handle Firestore types for JSON safety
-    print('========== DEBUG: addFavorite called ==========');
-    print('ID: $id');
-    print('FULL DATA BEFORE SAVE:');
-    print(data);
-    print('TYPE FIELD: ${data['type']}');
-    print('TYPE IS MAP: ${data['type'] is Map}');
-    if (data['type'] is Map) {
-      print('TYPE[ar]: ${(data['type'] as Map)['ar']}');
-      print('TYPE[fr]: ${(data['type'] as Map)['fr']}');
-    }
     _favorites[id] = data;
     await _save();
-    print('AFTER _save(), _favorites[$id] = ${_favorites[id]}');
-    print('=========================================');
-    notifyListeners();
-  }
 
-  Future<void> _migrateStoredFavorites() async {
-    // No migration needed; data is stored and restored as-is
+    notifyListeners();
   }
 
   Future<void> removeFavorite(String id) async {
     _favorites.remove(id);
     await _save();
     notifyListeners();
+  }
+
+  Future<void> clearAllFavorites() async {
+    _favorites.clear(); // Reset in-memory map
+    if (_prefs != null) {
+      await _prefs!.remove(_storageKey); // Remove the entire favorites string
+    } else {
+      // If prefs not yet initialized, just reset memory (next init will be empty)
+    }
+    notifyListeners(); // Important: UI will rebuild FavoritesPage etc.
+    print('DEBUG: All favorites cleared');
   }
 
   Future<void> toggleFavorite(String id, Map<String, dynamic>? data) async {
@@ -74,7 +68,7 @@ class FavoriteService extends ChangeNotifier {
 
   Future<void> _save() async {
     if (_prefs == null) _prefs = await SharedPreferences.getInstance();
-    // Convert any non-JSON-serializable Firestore types (e.g., Timestamp)
+
     final Map<String, dynamic> safeMap = _favorites.map((key, value) => MapEntry(key, _encodeDeep(value)));
     final encoded = json.encode(safeMap);
     await _prefs!.setString(_storageKey, encoded);

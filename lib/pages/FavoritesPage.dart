@@ -38,9 +38,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-        final isEnglish = Localizations.localeOf(context).languageCode == 'en';
+    final isEnglish = Localizations.localeOf(context).languageCode == 'en';
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
-    // final isEnglish = Localizations.localeOf(context).languageCode == 'en'; // unused → commented out
 
     return Scaffold(
       body: Builder(builder: (context) {
@@ -73,29 +72,28 @@ class _FavoritesPageState extends State<FavoritesPage> {
             final data = Map<String, dynamic>.from(entries[index].value);
 
             return YouthHouseCard(
+              key: ValueKey(key), // ← Add this line! Use ValueKey with the document ID
               id: key.toString(),
-              name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : data['nameFR'],
+              name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : (isEnglish ? (data['type']['en'] + ' ' + data['nameFR']) : data['type']['fr'] + ' ' + data['nameFR']),
               location: isArabic ? (data['state']['name_ar'] + '، ' + data['city']['name_ar']) : (data['state']['name_fr'] + ', ' + data['city']['name_fr']),
               imageUrl: data['imageUrl'] ?? '',
               fullData: data,
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HouseDetailsPage(
-                      name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : (isEnglish ? (data['type']['en'] + ' ' + data['nameFR']) : data['type']['fr'] + ' ' + data['nameFR'],
-                      location: isArabic ? '${data['state']['name_ar'] ?? ''}، ${data['city']['name_ar'] ?? ''}' : '${data['state']['name_fr'] ?? ''}, ${data['city']['name_fr'] ?? ''}',
-                      imageUrl: data['imageUrl'] ?? '',
-                      availableSpots: data['spots'] as int? ?? 0,
-                      phone: data['phone'] as String? ?? '',
-                      email: data['email'] as String? ?? '',
-                      facebookUrl: data['facebook'] as String? ?? '',
-                      instagramUrl: data['instagram'] as String? ?? '',
-                      twitterUrl: data['twitter'] as String? ?? '',
-                      address: data['address'] as String? ?? '',
-                      
-                    ), 
-                );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HouseDetailsPage(
+                              name: isArabic ? (data['type']['ar'] + ' ' + data['nameAR']) : (isEnglish ? (data['type']['en'] + ' ' + data['nameFR']) : data['type']['fr'] + ' ' + data['nameFR']),
+                              location: isArabic ? '${data['state']['name_ar'] ?? ''}، ${data['city']['name_ar'] ?? ''}' : '${data['state']['name_fr'] ?? ''}, ${data['city']['name_fr'] ?? ''}',
+                              imageUrl: data['imageUrl'] ?? '',
+                              availableSpots: data['spots'] as int? ?? 0,
+                              phone: data['phone'] as String? ?? '',
+                              email: data['email'] as String? ?? '',
+                              facebookUrl: data['facebook'] as String? ?? '',
+                              instagramUrl: data['instagram'] as String? ?? '',
+                              twitterUrl: data['twitter'] as String? ?? '',
+                              address: data['address'] as String? ?? '',
+                            )));
               },
             );
           },

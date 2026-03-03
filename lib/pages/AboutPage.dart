@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AboutPage extends StatelessWidget {
+class DevStatus {
+  Future<void> l3bsi() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDev', true);
+  }
+
+  Future<void> devi() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool? isDevv = prefs.getBool('repeat');
+  }
+}
+
+class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
+
+  @override
+  State<AboutPage> createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  int Clicks = 0;
+
+  DevStatus devStatus = DevStatus();
+  Future<void> isDev = DevStatus().devi();
 
   @override
   Widget build(BuildContext context) {
@@ -93,13 +116,26 @@ class AboutPage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 12),
-                  ListTile(
-                    leading: Icon(
-                      Icons.info_outline,
-                      color: Theme.of(context).colorScheme.primary,
+                  GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        Clicks++;
+                      });
+                      print(Clicks);
+                      if (Clicks >= 15) {
+                        await devStatus.l3bsi();
+                      }
+                    },
+                    child: InkWell(
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.info_outline,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: Text(loc.appVersion),
+                        subtitle: Text("1.1.0"),
+                      ),
                     ),
-                    title: Text(loc.appVersion),
-                    subtitle: Text("1.1.0"),
                   ),
                   ListTile(
                     leading: Icon(

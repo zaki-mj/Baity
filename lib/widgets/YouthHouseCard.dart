@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/services/favorite_service.dart';
 
@@ -76,17 +77,23 @@ class _YouthHouseCardState extends State<YouthHouseCard> {
                 bottomLeft: Radius.circular(16),
               ),
               child: hasImage
-                  ? Image.network(
-                      widget.imageUrl,
+                  ? CachedNetworkImage(
+                      imageUrl: widget.imageUrl,
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        width: 100,
-                        height: 100,
+                      placeholder: (context, url) => Container(
                         color: Colors.grey[300],
-                        child: const Icon(Icons.image, size: 40),
+                        child: const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                       ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.broken_image, size: 40, color: Colors.red),
+                      ),
+                      fadeInDuration: const Duration(milliseconds: 300),
+                      fadeOutDuration: const Duration(milliseconds: 100),
                     )
                   : Container(
                       width: 100,

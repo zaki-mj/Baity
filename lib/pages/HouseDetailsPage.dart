@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -81,7 +82,22 @@ class HouseDetailsPage extends StatelessWidget {
               bottomRight: Radius.circular(32),
             ),
             child: imageUrl != null
-                ? Image.network(imageUrl!, fit: BoxFit.cover)
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.broken_image, size: 40, color: Colors.red),
+                    ),
+                    fadeInDuration: const Duration(milliseconds: 300),
+                    fadeOutDuration: const Duration(milliseconds: 100),
+                  )
                 : Container(
                     height: 220,
                     color: theme.colorScheme.surfaceVariant,

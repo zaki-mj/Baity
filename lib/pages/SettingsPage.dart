@@ -1,13 +1,24 @@
+import 'package:baity/services/favorite_service.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:baity/themes/theme_provider.dart';
 import 'package:baity/local_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  @override
+  int clicks = 0;
+
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
 
@@ -91,6 +102,39 @@ class SettingsPage extends StatelessWidget {
                       },
                     ),
                   ),
+                  const Divider(),
+
+                  // Language Picker
+                  Consumer<LocaleProvider>(
+                    builder: (context, localeProvider, _) => ListTile(
+                      leading: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      title: Text(
+                        localeProvider.locale.languageCode == 'ar'
+                            ? loc.arabic
+                            : localeProvider.locale.languageCode == 'fr'
+                                ? loc.french
+                                : loc.english,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      subtitle: Text(
+                        'Tap to change language',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                        size: 16,
+                      ),
+                      onTap: () {
+                        _showClearCashDialog(context, localeProvider);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -138,6 +182,39 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
+            TextButton(
+              child: Text(loc.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showClearCashDialog(BuildContext context, LocaleProvider localeProvider) {
+    final loc = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(loc.changeLanguage),
+          content: Text('This will remove all cached images and favorited houses.\n\n'
+              'The app may load slightly slower next time until data is re-fetched.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                "Delete",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () async {
+                await FavoriteService.instance.clearAllFavorites();
+                await DefaultCacheManager().emptyCache();
+                Navigator.of(context).pop();
+              },
+            ),
             TextButton(
               child: Text(loc.cancel),
               onPressed: () {

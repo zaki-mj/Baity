@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Baity';
+  String get appTitle => 'Algerian Youth Hostels';
 
   @override
-  String get welcomeText => 'Welcome to Baity';
+  String get welcomeText => 'Welcome to Algerian Youth Hostels';
 
   @override
   String get exploreButton => 'Start Exploring';
@@ -99,10 +99,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
-  String get aboutTitle => 'About Baity';
+  String get aboutTitle => 'About Algerian Youth Hostels';
 
   @override
-  String get aboutDescription => 'Baity is a mobile application designed to help young people discover and explore youth houses and camps across Algeria. Our platform provides detailed information about various youth facilities, including locations, available spots, contact information, and social media links.';
+  String get aboutDescription => 'Algerian Youth Hostels is a mobile application designed to help young people discover and explore youth houses and camps across Algeria. Our platform provides detailed information about various youth facilities, including locations, available spots, contact information, and social media links.';
 
   @override
   String get technicalDetails => 'Technical Details';

@@ -100,13 +100,13 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Baity'**
+  /// **'Algerian Youth Hostels'**
   String get appTitle;
 
   /// No description provided for @welcomeText.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Baity'**
+  /// **'Welcome to Algerian Youth Hostels'**
   String get welcomeText;
 
   /// No description provided for @exploreButton.
@@ -280,13 +280,13 @@ abstract class AppLocalizations {
   /// No description provided for @aboutTitle.
   ///
   /// In en, this message translates to:
-  /// **'About Baity'**
+  /// **'About Algerian Youth Hostels'**
   String get aboutTitle;
 
   /// No description provided for @aboutDescription.
   ///
   /// In en, this message translates to:
-  /// **'Baity is a mobile application designed to help young people discover and explore youth houses and camps across Algeria. Our platform provides detailed information about various youth facilities, including locations, available spots, contact information, and social media links.'**
+  /// **'Algerian Youth Hostels is a mobile application designed to help young people discover and explore youth houses and camps across Algeria. Our platform provides detailed information about various youth facilities, including locations, available spots, contact information, and social media links.'**
   String get aboutDescription;
 
   /// No description provided for @technicalDetails.
