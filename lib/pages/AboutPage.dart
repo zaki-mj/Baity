@@ -23,6 +23,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   int Clicks = 0;
+  bool isDeve = false;
 
   DevStatus devStatus = DevStatus();
   Future<void> isDev = DevStatus().devi();
