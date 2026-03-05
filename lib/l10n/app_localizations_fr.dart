@@ -335,4 +335,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get heartSomeHousesFromDiscovery => 'Ajoutez en favoris des maisons depuis la page Découverte pour les voir ici';
+
+  @override
+  String get welcomeSlide1Title => 'Bienvenue dans l\'application Auberges de Jeunesse Algériennes';
+
+  @override
+  String get welcomeSlide1Description => 'Découvrez les auberges de jeunesse à travers l\'Algérie';
+
+  @override
+  String get welcomeSlide2Title => 'Trouvez facilement un hébergement';
+
+  @override
+  String get welcomeSlide2Description => 'Recherchez, contactez les hôtes et confirmez votre réservation en quelques clics';
+
+  @override
+  String get welcomeSlide3Title => 'Abordable et fiable';
+
+  @override
+  String get welcomeSlide3Description => 'Séjours économiques avec des hôtes vérifiés — commencez votre aventure dès maintenant !';
+
+  @override
+  String get startButton => 'Commencer';
+
+  @override
+  String get skipButton => 'Passer';
 }

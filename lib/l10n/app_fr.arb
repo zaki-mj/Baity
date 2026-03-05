@@ -107,5 +107,18 @@
   "jawalAssociation": "Association Jawal pour les activités de jeunesse"
   ,"favorites": "Favoris",
   "noFavoritesYet": "Aucun favori pour le moment",
-  "heartSomeHousesFromDiscovery": "Ajoutez en favoris des maisons depuis la page Découverte pour les voir ici"
+  "heartSomeHousesFromDiscovery": "Ajoutez en favoris des maisons depuis la page Découverte pour les voir ici",
+  "welcomeSlide1Title": "Bienvenue dans l'application Auberges de Jeunesse Algériennes",
+  "welcomeSlide1Description": "Découvrez les auberges de jeunesse à travers l'Algérie",
+  
+  "welcomeSlide2Title": "Trouvez facilement un hébergement",
+  "welcomeSlide2Description": "Recherchez, contactez les hôtes et confirmez votre réservation en quelques clics",
+  
+  "welcomeSlide3Title": "Abordable et fiable",
+  "welcomeSlide3Description": "Séjours économiques avec des hôtes vérifiés — commencez votre aventure dès maintenant !",
+  
+  "startButton": "Commencer",
+  "skipButton": "Passer"
+
+
 } 

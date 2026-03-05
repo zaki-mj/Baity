@@ -744,6 +744,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Heart some houses from Discovery to see them here'**
   String get heartSomeHousesFromDiscovery;
+
+  /// Onboarding slide 1 title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Algerian Youth Hostels'**
+  String get welcomeSlide1Title;
+
+  /// No description provided for @welcomeSlide1Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover youth hostels across Algeria'**
+  String get welcomeSlide1Description;
+
+  /// No description provided for @welcomeSlide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Easily Find a Place to Stay'**
+  String get welcomeSlide2Title;
+
+  /// No description provided for @welcomeSlide2Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Search, contact hosts and confirm your booking in just a few taps'**
+  String get welcomeSlide2Description;
+
+  /// No description provided for @welcomeSlide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Affordable & Trustworthy'**
+  String get welcomeSlide3Title;
+
+  /// No description provided for @welcomeSlide3Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget-friendly stays with verified hosts — start your adventure now!'**
+  String get welcomeSlide3Description;
+
+  /// No description provided for @startButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Exploring'**
+  String get startButton;
+
+  /// No description provided for @skipButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

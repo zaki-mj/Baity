@@ -335,4 +335,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get heartSomeHousesFromDiscovery => 'اضغط على قلب بعض البيوت من صفحة الاكتشاف لرؤيتها هنا';
+
+  @override
+  String get welcomeSlide1Title => 'مرحبا بك في تطبيق بيوت الشباب الجزائرية';
+
+  @override
+  String get welcomeSlide1Description => 'اكتشف بيوت الشباب عبر الجزائر';
+
+  @override
+  String get welcomeSlide2Title => 'ابحث بسهولة عن مكان للإقامة';
+
+  @override
+  String get welcomeSlide2Description => 'ابحث، تواصل مع المضيفين وأكد حجزك ببضع نقرات';
+
+  @override
+  String get welcomeSlide3Title => 'بأسعار معقولة وموثوقة';
+
+  @override
+  String get welcomeSlide3Description => 'إقامات اقتصادية مع مضيفين موثوقين — ابدأ مغامرتك الآن!';
+
+  @override
+  String get startButton => 'ابدأ الاستكشاف';
+
+  @override
+  String get skipButton => 'تخطي';
 }

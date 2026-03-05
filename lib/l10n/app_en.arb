@@ -108,6 +108,28 @@
 
   ,"favorites": "Favorites",
   "noFavoritesYet": "No favorites yet",
-  "heartSomeHousesFromDiscovery": "Heart some houses from Discovery to see them here"
-
+  "heartSomeHousesFromDiscovery": "Heart some houses from Discovery to see them here",
+  "welcomeSlide1Title": "Welcome to Algerian Youth Hostels",
+  "@welcomeSlide1Title": { "description": "Onboarding slide 1 title" },
+  
+  "welcomeSlide1Description": "Discover youth hostels across Algeria",
+  "@welcomeSlide1Description": {},
+  
+  "welcomeSlide2Title": "Easily Find a Place to Stay",
+  "@welcomeSlide2Title": {},
+  
+  "welcomeSlide2Description": "Search, contact hosts and confirm your booking in just a few taps",
+  "@welcomeSlide2Description": {},
+  
+  "welcomeSlide3Title": "Affordable & Trustworthy",
+  "@welcomeSlide3Title": {},
+  
+  "welcomeSlide3Description": "Budget-friendly stays with verified hosts — start your adventure now!",
+  "@welcomeSlide3Description": {},
+  
+  "startButton": "Start Exploring",
+  "@startButton": {},
+  
+  "skipButton": "Skip",
+  "@skipButton": {}
 }

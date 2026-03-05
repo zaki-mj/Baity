@@ -335,4 +335,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heartSomeHousesFromDiscovery => 'Heart some houses from Discovery to see them here';
+
+  @override
+  String get welcomeSlide1Title => 'Welcome to Algerian Youth Hostels';
+
+  @override
+  String get welcomeSlide1Description => 'Discover youth hostels across Algeria';
+
+  @override
+  String get welcomeSlide2Title => 'Easily Find a Place to Stay';
+
+  @override
+  String get welcomeSlide2Description => 'Search, contact hosts and confirm your booking in just a few taps';
+
+  @override
+  String get welcomeSlide3Title => 'Affordable & Trustworthy';
+
+  @override
+  String get welcomeSlide3Description => 'Budget-friendly stays with verified hosts — start your adventure now!';
+
+  @override
+  String get startButton => 'Start Exploring';
+
+  @override
+  String get skipButton => 'Skip';
 }
