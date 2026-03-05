@@ -107,35 +107,6 @@ class _NavigationShellState extends State<NavigationShell> {
             ),
             ListTile(
               leading: Icon(
-                Icons.admin_panel_settings_rounded,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              title: Text(
-                loc.adminInterface,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              onTap: () {
-                if (user != null) {
-                  Navigator.pop(context); // Close drawer
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AdminDashboardPage(),
-                    ),
-                  );
-                } else {
-                  Navigator.pop(context); // Close drawer
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AdminLoginPage(),
-                    ),
-                  );
-                }
-              },
-            ),
-            ListTile(
-              leading: Icon(
                 Icons.info_outline,
                 color: Theme.of(context).colorScheme.primary,
               ),

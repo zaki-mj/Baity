@@ -1,4 +1,8 @@
+import 'package:baity/pages/AdminDashboardPage.dart';
+import 'package:baity/pages/AdminLoginPage.dart';
+import 'package:baity/services/dev_mode_service.dart';
 import 'package:baity/services/favorite_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +21,21 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   @override
-  int clicks = 0;
+  final user = FirebaseAuth.instance.currentUser;
+  final _devService = DevModeService();
+  bool _isDevMode = false;
+
+  Future<void> _loadDevMode() async {
+    final enabled = await _devService.isDevModeEnabled();
+    if (mounted) {
+      setState(() => _isDevMode = enabled);
+    }
+  }
 
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+
+    _loadDevMode();
 
     return Scaffold(
       appBar: AppBar(
@@ -135,6 +150,50 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),
                   ),
+
+                  if (_isDevMode)
+                    Column(
+                      children: [
+                        const Divider(),
+                        (ListTile(
+                          leading: Icon(
+                            Icons.admin_panel_settings,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          subtitle: Text(
+                            'Tap to change language',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                                ),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            size: 16,
+                          ),
+                          title: Text("Admin"),
+                          onTap: () {
+                            if (user != null) {
+                              Navigator.pop(context); // Close drawer
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminDashboardPage(),
+                                ),
+                              );
+                            } else {
+                              Navigator.pop(context); // Close drawer
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AdminLoginPage(),
+                                ),
+                              );
+                            }
+                          },
+                        )),
+                      ],
+                    )
                 ],
               ),
             ),

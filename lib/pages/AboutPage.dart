@@ -1,18 +1,7 @@
+import 'package:baity/services/dev_mode_service.dart';
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class DevStatus {
-  Future<void> l3bsi() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDev', true);
-  }
-
-  Future<void> devi() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool? isDevv = prefs.getBool('repeat');
-  }
-}
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -22,11 +11,67 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  int Clicks = 0;
-  bool isDeve = false;
+  int _tapCount = 0;
+  bool _devModeActive = false;
 
-  DevStatus devStatus = DevStatus();
-  Future<void> isDev = DevStatus().devi();
+  final _devService = DevModeService();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDevModeStatus();
+  }
+
+  Future<void> _loadDevModeStatus() async {
+    final enabled = await _devService.isDevModeEnabled();
+    if (mounted) {
+      setState(() {
+        _devModeActive = enabled;
+      });
+    }
+  }
+
+  Future<void> _handleVersionTap() async {
+    setState(() {
+      _tapCount++;
+    });
+
+    if (_tapCount >= 7) {
+      await _devService.enableDevMode();
+      await _loadDevModeStatus(); // refresh UI
+      _tapCount = 0; // reset counter after activation
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Developer mode activated!"),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _disableDevMode() async {
+    setState(() {
+      _tapCount++;
+    });
+
+    if (_tapCount >= 7) {
+      await _devService.enableDevMode();
+      await _loadDevModeStatus(); // refresh UI
+      _tapCount = 0; // reset counter after activation
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Developer mode activated!"),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,24 +163,25 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () async {
-                      setState(() {
-                        Clicks++;
-                      });
-                      print(Clicks);
-                      if (Clicks >= 15) {
-                        await devStatus.l3bsi();
+                    onTap: _handleVersionTap,
+                    onLongPress: () {
+                      if (_devModeActive) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Developer mode Disabled!"),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                        _devService.disableDevMode();
                       }
                     },
-                    child: InkWell(
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.info_outline,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        title: Text(loc.appVersion),
-                        subtitle: Text("1.1.0"),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.info_outline,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
+                      title: Text(loc.appVersion),
+                      subtitle: Text("1.1.0 ${_devModeActive ? '  -  DEV MODE' : ''}"),
                     ),
                   ),
                   ListTile(
