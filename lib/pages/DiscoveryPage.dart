@@ -1,12 +1,10 @@
 import 'package:baity/services/location_service.dart';
 import 'package:baity/widgets/TypeSelector.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:baity/l10n/app_localizations.dart';
 import 'package:baity/widgets/YouthHouseCard.dart';
 import 'package:baity/pages/HouseDetailsPage.dart';
-
 import 'package:baity/services/StoreServices.dart';
 
 StoreServices _storeServices = StoreServices();
@@ -25,7 +23,18 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
   String? selectedType;
   String? queryType;
 
-  // ── Collapsible filter state ──────────────────────────────────────────────
+  /// ───────── Pagination Configuration ─────────
+  int pageSize = 6; // ← change this to adjust page size
+
+  final ScrollController _scrollController = ScrollController();
+
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> _docs = [];
+  DocumentSnapshot? _lastDocument;
+
+  bool _isLoading = false;
+  bool _hasMore = true;
+
+  /// ── Collapsible filter state ─────────────────────────
   bool _filtersExpanded = false;
   late final AnimationController _filterAnimController;
   late final Animation<double> _filterHeightFactor;
@@ -35,14 +44,26 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
+
     _filterAnimController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 280),
     );
+
     _filterHeightFactor = CurvedAnimation(
       parent: _filterAnimController,
       curve: Curves.easeInOut,
     );
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+        _loadNextPage();
+      }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadNextPage();
+    });
   }
 
   @override
@@ -58,6 +79,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
   @override
   void dispose() {
     _filterAnimController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -66,19 +88,57 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
     if (mounted) setState(() {});
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> _buildStream() {
+  Query<Map<String, dynamic>> _buildQuery() {
     Query<Map<String, dynamic>> query = FirebaseFirestore.instance.collection('places');
+
     if (selectedState != null && selectedState!.isNotEmpty) {
       query = query.where('state.code', isEqualTo: selectedState);
     }
+
     if (queryType != null && queryType!.isNotEmpty) {
       query = query.where('type.ar', isEqualTo: queryType);
     }
-    return query.snapshots();
+
+    return query;
+  }
+
+  Future<void> _loadNextPage() async {
+    if (_isLoading || !_hasMore) return;
+
+    setState(() => _isLoading = true);
+
+    Query<Map<String, dynamic>> query = _buildQuery().limit(pageSize);
+
+    if (_lastDocument != null) {
+      query = query.startAfterDocument(_lastDocument!);
+    }
+
+    final snapshot = await query.get();
+
+    if (snapshot.docs.isNotEmpty) {
+      _lastDocument = snapshot.docs.last;
+      _docs.addAll(snapshot.docs);
+    }
+
+    if (snapshot.docs.length < pageSize) {
+      _hasMore = false;
+    }
+
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _resetPagination() {
+    _docs.clear();
+    _lastDocument = null;
+    _hasMore = true;
+    _loadNextPage();
   }
 
   void _toggleFilters() {
     setState(() => _filtersExpanded = !_filtersExpanded);
+
     if (_filtersExpanded) {
       _filterAnimController.forward();
     } else {
@@ -92,6 +152,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
       selectedType = null;
       queryType = null;
     });
+
+    _resetPagination();
   }
 
   bool get _hasActiveFilters => (selectedState != null && selectedState!.isNotEmpty) || (selectedType != null && selectedType!.isNotEmpty);
@@ -124,7 +186,10 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
             filterHeightFactor: _filterHeightFactor,
             onToggle: _toggleFilters,
             onClear: _clearFilters,
-            onStateChanged: (value) => setState(() => selectedState = value),
+            onStateChanged: (value) {
+              setState(() => selectedState = value);
+              _resetPagination();
+            },
             onTypeChanged: (value) {
               setState(() {
                 selectedType = value;
@@ -134,61 +199,62 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
                         ? "مخيم الشباب"
                         : null;
               });
+
+              _resetPagination();
             },
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: _buildStream(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text(loc.errorNotFound));
-                }
-                final docs = snapshot.data?.docs ?? [];
-                if (docs.isEmpty) {
-                  return Center(child: Text(loc.errorNotFound));
-                }
+            child: _docs.isEmpty && _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _docs.isEmpty
+                    ? Center(child: Text(loc.errorNotFound))
+                    : ListView.builder(
+                        controller: _scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: _docs.length + (_hasMore ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index >= _docs.length) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
 
-                return ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    final data = docs[index].data();
-                    final imageUrl = isValidUrl(data['imageUrl']) ? data['imageUrl'] : 'https://i.ibb.co/sJvdxyHr/952285.webp';
+                          final data = _docs[index].data();
 
-                    return YouthHouseCard(
-                      key: ValueKey(docs[index].id),
-                      name: isArabic ? '${data['type']['ar']} ${data['nameAR']}' : (isEnglish ? '${data['type']['en']} ${data['nameFR']}' : '${data['type']['fr']} ${data['nameFR']}'),
-                      location: isArabic ? '${data['state']['name_ar']}، ${data['city']['name_ar']}' : '${data['state']['name_fr']}, ${data['city']['name_fr']}',
-                      imageUrl: imageUrl,
-                      id: docs[index].id,
-                      fullData: data,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HouseDetailsPage(
-                              name: isArabic ? '${data['type']['ar']} ${data['nameAR']}' : data['nameFR'],
-                              location: isArabic ? '${data['state']['name_ar']}، ${data['city']['name_ar']}' : '${data['state']['name_fr']}, ${data['city']['name_fr']}',
-                              imageUrl: imageUrl,
-                              availableSpots: data['spots'] ?? 0,
-                              phone: data['phone'] ?? '',
-                              email: data['email'] ?? '',
-                              facebookUrl: data['facebook'] ?? '',
-                              instagramUrl: data['instagram'] ?? '',
-                              twitterUrl: data['twitter'] ?? '',
-                              address: data['address'] ?? '',
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                          final imageUrl = isValidUrl(data['imageUrl']) ? data['imageUrl'] : 'https://i.ibb.co/sJvdxyHr/952285.webp';
+
+                          return YouthHouseCard(
+                            key: ValueKey(_docs[index].id),
+                            name: isArabic ? '${data['type']['ar']} ${data['nameAR']}' : (isEnglish ? '${data['type']['en']} ${data['nameFR']}' : '${data['type']['fr']} ${data['nameFR']}'),
+                            location: isArabic ? '${data['state']['name_ar']}، ${data['city']['name_ar']}' : '${data['state']['name_fr']}, ${data['city']['name_fr']}',
+                            imageUrl: imageUrl,
+                            id: _docs[index].id,
+                            fullData: data,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HouseDetailsPage(
+                                    name: isArabic ? '${data['type']['ar']} ${data['nameAR']}' : data['nameFR'],
+                                    location: isArabic ? '${data['state']['name_ar']}، ${data['city']['name_ar']}' : '${data['state']['name_fr']}, ${data['city']['name_fr']}',
+                                    imageUrl: imageUrl,
+                                    availableSpots: data['spots'] ?? 0,
+                                    phone: data['phone'] ?? '',
+                                    email: data['email'] ?? '',
+                                    facebookUrl: data['facebook'] ?? '',
+                                    instagramUrl: data['instagram'] ?? '',
+                                    twitterUrl: data['twitter'] ?? '',
+                                    address: data['address'] ?? '',
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
           ),
         ],
       ),
@@ -196,7 +262,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> with SingleTickerProvider
   }
 }
 
-// ── Extracted collapsible filter widget ────────────────────────────────────────
+/// ── Filter widget (UNCHANGED) ─────────────────────────
 class _CollapsibleFilterBar extends StatelessWidget {
   final dynamic loc;
   final ThemeData theme;
