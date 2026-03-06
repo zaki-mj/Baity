@@ -359,4 +359,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skipButton => 'Skip';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get favourites => 'Favourites';
+
+  @override
+  String get devModeActivated => 'You are now a developer';
+
+  @override
+  String get devModeDeactivated => 'You left dev mode';
+
+  @override
+  String get clearCacheAndFavorites => 'Clear cache and favorites';
+
+  @override
+  String get clearCacheConfirmationTitle => 'Clear cache and favorites?';
+
+  @override
+  String get clearCacheConfirmationMessage => 'Are you sure? This will remove all cached images and your favorite hostels.';
+
+  @override
+  String get administrator => 'Administrator';
+
+  @override
+  String get enterAdminPanel => 'Enter Admin Panel';
 }

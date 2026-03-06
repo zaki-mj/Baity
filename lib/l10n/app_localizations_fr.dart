@@ -9,10 +9,10 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Baity';
+  String get appTitle => 'Auberges de Jeunesse Algériennes';
 
   @override
-  String get welcomeText => 'Bienvenue sur Baity';
+  String get welcomeText => 'Bienvenue sur Auberges de Jeunesse Algériennes';
 
   @override
   String get exploreButton => 'Commencer l\'exploration';
@@ -99,10 +99,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get about => 'À propos';
 
   @override
-  String get aboutTitle => 'À propos de Baity';
+  String get aboutTitle => 'À propos de Auberges de Jeunesse Algériennes';
 
   @override
-  String get aboutDescription => 'Baity est une application mobile conçue pour aider les jeunes à découvrir et explorer les maisons et camps de jeunesse à travers l\'Algérie. Notre plateforme fournit des informations détaillées sur diverses installations de jeunesse, y compris les emplacements, les places disponibles, les informations de contact et les liens vers les réseaux sociaux.';
+  String get aboutDescription => 'Auberges de Jeunesse Algériennes est une application mobile conçue pour aider les jeunes à découvrir et explorer les maisons et camps de jeunesse à travers l\'Algérie. Notre plateforme fournit des informations détaillées sur diverses installations de jeunesse, y compris les emplacements, les places disponibles, les informations de contact et les liens vers les réseaux sociaux.';
 
   @override
   String get technicalDetails => 'Détails techniques';
@@ -147,7 +147,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get french => 'Français';
 
   @override
-  String get changeLanguage => 'Changer de langue';
+  String get changeLanguage => 'Changer la langue';
 
   @override
   String get cancel => 'Annuler';
@@ -359,4 +359,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get skipButton => 'Passer';
+
+  @override
+  String get home => 'Accueil';
+
+  @override
+  String get favourites => 'Favoris';
+
+  @override
+  String get devModeActivated => 'Vous êtes maintenant développeur';
+
+  @override
+  String get devModeDeactivated => 'Vous avez quitté le mode développeur';
+
+  @override
+  String get clearCacheAndFavorites => 'Vider le cache et les favoris';
+
+  @override
+  String get clearCacheConfirmationTitle => 'Vider le cache et les favoris ?';
+
+  @override
+  String get clearCacheConfirmationMessage => 'Êtes-vous sûr ? Cela supprimera toutes les images en cache et vos auberges favorites.';
+
+  @override
+  String get administrator => 'Administrateur';
+
+  @override
+  String get enterAdminPanel => 'Accéder au panneau d\'administration';
 }

@@ -73,12 +73,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         themeProvider.isDarkMode ? loc.darkMode : loc.lightMode,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      subtitle: Text(
-                        themeProvider.isDarkMode ? 'Switch to light mode' : 'Switch to dark mode',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                            ),
-                      ),
                       value: themeProvider.isDarkMode,
                       onChanged: (_) => themeProvider.toggleTheme(),
                     ),
@@ -94,18 +88,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       title: Text(
-                        localeProvider.locale.languageCode == 'ar'
-                            ? loc.arabic
-                            : localeProvider.locale.languageCode == 'fr'
-                                ? loc.french
-                                : loc.english,
+                        loc.changeLanguage,
                         style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      subtitle: Text(
-                        'Tap to change language',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                            ),
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
@@ -127,18 +111,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       title: Text(
-                        localeProvider.locale.languageCode == 'ar'
-                            ? loc.arabic
-                            : localeProvider.locale.languageCode == 'fr'
-                                ? loc.french
-                                : loc.english,
+                        loc.clearCacheAndFavorites,
                         style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      subtitle: Text(
-                        'Tap to change language',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                            ),
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
@@ -161,7 +135,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           subtitle: Text(
-                            'Tap to change language',
+                            loc.enterAdminPanel,
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                                 ),
@@ -171,7 +145,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                             size: 16,
                           ),
-                          title: Text("Admin"),
+                          title: Text(loc.adminInterface),
                           onTap: () {
                             if (user != null) {
                               Navigator.pop(context); // Close drawer
@@ -259,13 +233,12 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(loc.changeLanguage),
-          content: Text('This will remove all cached images and favorited houses.\n\n'
-              'The app may load slightly slower next time until data is re-fetched.'),
+          title: Text(loc.clearCacheConfirmationTitle),
+          content: Text(loc.clearCacheConfirmationMessage),
           actions: <Widget>[
             TextButton(
               child: Text(
-                "Delete",
+                loc.delete,
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () async {

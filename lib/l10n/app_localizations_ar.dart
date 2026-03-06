@@ -9,10 +9,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get appTitle => 'بيتي';
+  String get appTitle => 'بيوت الشباب الجزائرية';
 
   @override
-  String get welcomeText => 'مرحبًا بك في بيتي';
+  String get welcomeText => 'مرحبًا بك في بيوت الشباب الجزائرية';
 
   @override
   String get exploreButton => 'ابدأ الاستكشاف';
@@ -99,10 +99,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get about => 'حول التطبيق';
 
   @override
-  String get aboutTitle => 'حول بيتي';
+  String get aboutTitle => 'حول بيوت الشباب الجزائرية';
 
   @override
-  String get aboutDescription => 'بيتي هو تطبيق جوال مصمم لمساعدة الشباب في اكتشاف واستكشاف بيوت ومخيمات الشباب في جميع أنحاء الجزائر. توفر منصتنا معلومات مفصلة عن مختلف مرافق الشباب، بما في ذلك المواقع والأماكن المتاحة ومعلومات الاتصال وروابط وسائل التواصل الاجتماعي.';
+  String get aboutDescription => 'بيوت الشباب الجزائرية هو تطبيق جوال مصمم لمساعدة الشباب في اكتشاف واستكشاف بيوت ومخيمات الشباب في جميع أنحاء الجزائر. توفر منصتنا معلومات مفصلة عن مختلف مرافق الشباب، بما في ذلك المواقع والأماكن المتاحة ومعلومات الاتصال وروابط وسائل التواصل الاجتماعي.';
 
   @override
   String get technicalDetails => 'التفاصيل التقنية';
@@ -359,4 +359,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get skipButton => 'تخطي';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get favourites => 'المفضلة';
+
+  @override
+  String get devModeActivated => 'أنت الآن مطور';
+
+  @override
+  String get devModeDeactivated => 'لقد غادرت وضع المطور';
+
+  @override
+  String get clearCacheAndFavorites => 'مسح الذاكرة المؤقتة والمفضلة';
+
+  @override
+  String get clearCacheConfirmationTitle => 'مسح الذاكرة المؤقتة والمفضلة؟';
+
+  @override
+  String get clearCacheConfirmationMessage => 'هل أنت متأكد؟ سيؤدي هذا إلى حذف جميع الصور المخزنة مؤقتًا وبيوت الشباب لديك.';
+
+  @override
+  String get administrator => 'مدير النظام';
+
+  @override
+  String get enterAdminPanel => 'الدخول إلى لوحة الإدارة';
 }

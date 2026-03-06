@@ -20,7 +20,7 @@ class TypeSelector extends StatelessWidget {
       isExpanded: true,
       value: selectedType,
       decoration: InputDecoration(
-        labelText: loc.type,
+        //labelText: loc.type,
         prefixIcon: Icon(
           Icons.category,
           color: theme.colorScheme.primary,

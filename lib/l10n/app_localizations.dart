@@ -792,6 +792,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip'**
   String get skipButton;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @favourites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites'**
+  String get favourites;
+
+  /// No description provided for @devModeActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'You are now a developer'**
+  String get devModeActivated;
+
+  /// No description provided for @devModeDeactivated.
+  ///
+  /// In en, this message translates to:
+  /// **'You left dev mode'**
+  String get devModeDeactivated;
+
+  /// No description provided for @clearCacheAndFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear cache and favorites'**
+  String get clearCacheAndFavorites;
+
+  /// No description provided for @clearCacheConfirmationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear cache and favorites?'**
+  String get clearCacheConfirmationTitle;
+
+  /// No description provided for @clearCacheConfirmationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure? This will remove all cached images and your favorite hostels.'**
+  String get clearCacheConfirmationMessage;
+
+  /// No description provided for @administrator.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator'**
+  String get administrator;
+
+  /// No description provided for @enterAdminPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Admin Panel'**
+  String get enterAdminPanel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,7 +1,7 @@
 {
   "@@locale": "fr",
-  "appTitle": "Baity",
-  "welcomeText": "Bienvenue sur Baity",
+  "appTitle": "Auberges de Jeunesse Algériennes",
+  "welcomeText": "Bienvenue sur Auberges de Jeunesse Algériennes",
   "exploreButton": "Commencer l'exploration",
   "slogan": "Trouvez votre prochaine aventure dans les maisons et camps de jeunesse !",
   "adminLogin": "Connexion administrateur",
@@ -30,8 +30,8 @@
   "detailsTwitter": "Twitter",
   "detailsAddress": "Adresse",
   "about": "À propos",
-  "aboutTitle": "À propos de Baity",
-  "aboutDescription": "Baity est une application mobile conçue pour aider les jeunes à découvrir et explorer les maisons et camps de jeunesse à travers l'Algérie. Notre plateforme fournit des informations détaillées sur diverses installations de jeunesse, y compris les emplacements, les places disponibles, les informations de contact et les liens vers les réseaux sociaux.",
+  "aboutTitle": "À propos de Auberges de Jeunesse Algériennes",
+  "aboutDescription": "Auberges de Jeunesse Algériennes est une application mobile conçue pour aider les jeunes à découvrir et explorer les maisons et camps de jeunesse à travers l'Algérie. Notre plateforme fournit des informations détaillées sur diverses installations de jeunesse, y compris les emplacements, les places disponibles, les informations de contact et les liens vers les réseaux sociaux.",
   "technicalDetails": "Détails techniques",
   "appVersion": "Version de l'application",
   "versionNumber": "1.0.0",
@@ -118,7 +118,17 @@
   "welcomeSlide3Description": "Séjours économiques avec des hôtes vérifiés — commencez votre aventure dès maintenant !",
   
   "startButton": "Commencer",
-  "skipButton": "Passer"
+  "skipButton": "Passer",
+  "home": "Accueil",
+  "favourites": "Favoris",
+  "devModeActivated": "Vous êtes maintenant développeur",
+  "devModeDeactivated": "Vous avez quitté le mode développeur",
+  "clearCacheAndFavorites": "Vider le cache et les favoris",
+  "clearCacheConfirmationTitle": "Vider le cache et les favoris ?",
+  "clearCacheConfirmationMessage": "Êtes-vous sûr ? Cela supprimera toutes les images en cache et vos auberges favorites.",
+  "administrator": "Administrateur",
+  "enterAdminPanel": "Accéder au panneau d'administration",
+  "changeLanguage": "Changer la langue"
 
 
 } 

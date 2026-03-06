@@ -128,7 +128,7 @@ class _NavigationShellState extends State<NavigationShell> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"), BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favourite")], currentIndex: selectedIndex, onTap: _onItemTapped),
+      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[BottomNavigationBarItem(icon: Icon(Icons.home), label: loc.home), BottomNavigationBarItem(icon: Icon(Icons.favorite), label: loc.favorites)], currentIndex: selectedIndex, onTap: _onItemTapped),
     );
   }
 }
