@@ -43,20 +43,14 @@ class StoreServices {
   }
 
   Stream<QuerySnapshot> getAllPlaces() {
-    return FirebaseFirestore.instance
-        .collection('places')
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+    return FirebaseFirestore.instance.collection('places').orderBy('createdAt', descending: true).snapshots();
   }
 
   Future<void> updatePlace(String docId, Map<String, dynamic> data) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('places')
-          .doc(docId)
-          .update(data);
+      await FirebaseFirestore.instance.collection('places').doc(docId).update(data);
     } catch (e) {
-      print("Error updating place: $e");
+      //print("Error updating place: $e");
       rethrow;
     }
   }
@@ -83,6 +77,4 @@ class StoreServices {
       });
     }
   }
-
-
 }
