@@ -55,7 +55,6 @@ class StoreServices {
     }
   }
 
-  /// save function
   Future<void> savePlace({
     String? docId, // if null -> create, else update
     required Map<String, dynamic> data,
